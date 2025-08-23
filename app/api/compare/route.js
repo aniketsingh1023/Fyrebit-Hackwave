@@ -11,10 +11,9 @@ const mockRetailers = [
 
 function generateMockPrices(basePrice, productName) {
   return mockRetailers.map((retailer, index) => {
-    // Generate realistic price variations
-    const variation = (Math.random() - 0.5) * 0.3 // ±15% variation
+    const variation = ((index % 3) - 1) * 0.15 // -15%, 0%, +15% variation
     const price = basePrice * (1 + variation)
-    const isOnSale = Math.random() > 0.6
+    const isOnSale = index % 2 === 0
     const originalPrice = isOnSale ? price * 1.2 : price
 
     return {
@@ -23,12 +22,12 @@ function generateMockPrices(basePrice, productName) {
       price: Number.parseFloat(price.toFixed(2)),
       originalPrice: isOnSale ? Number.parseFloat(originalPrice.toFixed(2)) : null,
       isOnSale,
-      inStock: Math.random() > 0.1, // 90% chance in stock
-      rating: Number.parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
-      reviews: Math.floor(Math.random() * 500) + 10,
+      inStock: index !== 2, // Make one retailer out of stock deterministically
+      rating: Number.parseFloat((3.5 + (index % 4) * 0.4).toFixed(1)),
+      reviews: 50 + index * 100,
       url: `${retailer.baseUrl}/product/${productName.toLowerCase().replace(/\s+/g, "-")}`,
-      shippingInfo: index === 0 ? "Free shipping" : Math.random() > 0.5 ? "Free shipping over $50" : "$5.99 shipping",
-      estimatedDelivery: Math.floor(Math.random() * 7) + 1,
+      shippingInfo: index === 0 ? "Free shipping" : index % 2 === 0 ? "Free shipping over $50" : "$5.99 shipping",
+      estimatedDelivery: (index % 7) + 1,
     }
   })
 }

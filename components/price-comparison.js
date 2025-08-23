@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Search, ExternalLink, RefreshCw, TrendingDown, TrendingUp, AlertCircle } from "lucide-react"
 
-// Mock scraping function - simulates web scraping
 const mockScrapeRetailers = async (productName, category) => {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 2000))
@@ -22,17 +21,18 @@ const mockScrapeRetailers = async (productName, category) => {
     { name: "Macy's", domain: "macys.com", logo: "/macys-logo.png" },
   ]
 
-  // Generate realistic price variations
-  const basePrice = Math.random() * 100 + 50
+  // Use deterministic base price to avoid hydration issues
+  const basePrice = 75.99
 
   return retailers
-    .map((retailer) => {
-      const priceVariation = (Math.random() - 0.5) * 0.4 // ±20% variation
+    .map((retailer, index) => {
+      // Use index-based deterministic variations instead of Math.random()
+      const priceVariation = ((index % 3) - 1) * 0.15 // -15%, 0%, +15% variation
       const price = basePrice * (1 + priceVariation)
-      const originalPrice = price * (1 + Math.random() * 0.3) // Original price 0-30% higher
-      const inStock = Math.random() > 0.2 // 80% chance in stock
-      const rating = 3.5 + Math.random() * 1.5 // 3.5-5.0 rating
-      const reviews = Math.floor(Math.random() * 1000) + 10
+      const originalPrice = price * 1.2 // 20% higher original price
+      const inStock = index !== 2 // Make one retailer out of stock deterministically
+      const rating = 3.5 + (index % 4) * 0.4 // Ratings from 3.5 to 4.7
+      const reviews = 50 + index * 100 // Reviews from 50 to 650
 
       return {
         retailer: retailer.name,
@@ -46,7 +46,7 @@ const mockScrapeRetailers = async (productName, category) => {
         reviews,
         url: `https://${retailer.domain}/search?q=${encodeURIComponent(productName)}`,
         lastUpdated: new Date().toISOString(),
-        shipping: Math.random() > 0.5 ? "Free" : `$${(Math.random() * 10 + 5).toFixed(2)}`,
+        shipping: index % 2 === 0 ? "Free" : `$${(5 + index).toFixed(2)}`,
       }
     })
     .sort((a, b) => a.price - b.price)
@@ -57,6 +57,11 @@ export default function PriceComparison({ productName, category, className = "" 
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
   const [lastSearched, setLastSearched] = useState("")
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleSearch = async (query = searchQuery) => {
     if (!query.trim()) return
@@ -94,10 +99,34 @@ export default function PriceComparison({ productName, category, className = "" 
   }
 
   useEffect(() => {
-    if (productName) {
+    if (productName && isClient) {
       handleSearch(productName)
     }
-  }, [productName])
+  }, [productName, isClient])
+
+  if (!isClient) {
+    return (
+      <div className={`space-y-6 ${className}`}>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Search className="w-5 h-5 text-primary" />
+              <span>Price Comparison Tool</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex space-x-2">
+              <Input type="text" placeholder="Enter product name to compare prices..." className="flex-1" disabled />
+              <Button disabled>
+                <Search className="w-4 h-4" />
+                Search
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   return (
     <div className={`space-y-6 ${className}`}>

@@ -84,8 +84,8 @@ export async function POST(request) {
     // Simulate AI processing delay
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
-    // Mock AI analysis - in production, use actual AI service
-    const randomResult = mockAnalysisResults[Math.floor(Math.random() * mockAnalysisResults.length)]
+    const resultIndex = file.name.length % mockAnalysisResults.length
+    const randomResult = mockAnalysisResults[resultIndex]
 
     // Generate price comparison for the analyzed product
     const mockRetailers = [
@@ -95,13 +95,13 @@ export async function POST(request) {
       { name: "Macy's", logo: "/macys-logo.png" },
     ]
 
-    const priceComparisons = mockRetailers.map((retailer) => ({
+    const priceComparisons = mockRetailers.map((retailer, index) => ({
       retailer: retailer.name,
       logo: retailer.logo,
-      price: Number.parseFloat((randomResult.estimatedPrice * (0.9 + Math.random() * 0.2)).toFixed(2)),
-      inStock: Math.random() > 0.2,
-      rating: Number.parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
-      reviews: Math.floor(Math.random() * 300) + 20,
+      price: Number.parseFloat((randomResult.estimatedPrice * (0.9 + (index % 3) * 0.1)).toFixed(2)),
+      inStock: index !== 1, // Make one retailer out of stock deterministically
+      rating: Number.parseFloat((3.5 + (index % 4) * 0.4).toFixed(1)),
+      reviews: 50 + index * 75,
     }))
 
     return NextResponse.json({

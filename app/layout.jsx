@@ -1,6 +1,5 @@
-import React from "react"
-import  { Metadata } from "next"
 import { Playfair_Display, Source_Sans_3 } from "next/font/google"
+import AuthSessionProvider from "@/components/session-provider.jsx"
 import "./globals.css"
 
 const playfair = Playfair_Display({
@@ -26,7 +25,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${playfair.variable} ${sourceSans.variable} antialiased`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <AuthSessionProvider>{children}</AuthSessionProvider>
+      </body>
     </html>
   )
 }

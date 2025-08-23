@@ -1,33 +1,54 @@
-import dbConnect from "@/lib/mongodb"
+import { NextResponse } from "next/server"
+import connectDB from "@/lib/mongodb"
+import { hashPassword } from "@/lib/auth"
 import User from "@/models/User"
-import bcrypt from "bcryptjs"
 
-export async function POST(req) {
+export async function POST(request) {
   try {
-    const body = await req.json()
-    const { email, password, name } = body
+    const userData = await request.json()
+    const { email, password, name } = userData
 
-    // connect to DB
-    await dbConnect()
-
-    // check if user exists
-    const existingUser = await User.findOne({ email })
-    if (existingUser) {
-      return new Response(JSON.stringify({ error: "User already exists" }), { status: 400 })
+    if (!email || !password || !name) {
+      return NextResponse.json({ error: "Name, email and password are required" }, { status: 400 })
     }
 
-    // hash password
-    const hashedPassword = await bcrypt.hash(password, 10)
+    await connectDB()
 
-    // create new user
-    const newUser = await User.create({
-      ...body,
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: email.toLowerCase() })
+    if (existingUser) {
+      return NextResponse.json({ error: "User already exists with this email" }, { status: 409 })
+    }
+
+    const hashedPassword = await hashPassword(password)
+
+    const newUser = new User({
+      name,
+      email: email.toLowerCase(),
       password: hashedPassword,
+      isEmailVerified: false,
+      isActive: true,
+      lastLogin: null,
+      wishlist: [],
+      priceAlerts: [],
+      searchHistory: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
     })
 
-    return new Response(JSON.stringify({ user: newUser }), { status: 201 })
+    await newUser.save()
+
+    return NextResponse.json({
+      success: true,
+      message: "Account created successfully",
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+      },
+    })
   } catch (error) {
     console.error("Signup error:", error)
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 })
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

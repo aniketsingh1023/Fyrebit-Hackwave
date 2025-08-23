@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useSession, signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -22,7 +23,6 @@ import {
   Gem,
 } from "lucide-react"
 import Link from "next/link"
-import { useAuth } from "@/components/auth-check"
 import { useRouter } from "next/navigation"
 
 const categories = [
@@ -205,16 +205,16 @@ const trendingProducts = [
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { user, logout, isLoading } = useAuth()
+  const { data: session, status } = useSession()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (status === "unauthenticated") {
       router.push("/login")
     }
-  }, [user, isLoading, router])
+  }, [status, router])
 
-  if (isLoading) {
+  if (status === "loading") {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -225,7 +225,7 @@ export default function HomePage() {
     )
   }
 
-  if (!user) {
+  if (status === "unauthenticated") {
     return null
   }
 
@@ -234,6 +234,10 @@ export default function HomePage() {
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
     }
+  }
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/" })
   }
 
   return (
@@ -283,7 +287,7 @@ export default function HomePage() {
                   <User className="w-4 h-4" />
                 </Link>
               </Button>
-              <Button variant="outline" size="sm" onClick={logout}>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
                 Logout
               </Button>
             </div>
@@ -321,7 +325,7 @@ export default function HomePage() {
                 <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
                   Dashboard
                 </Link>
-                <Button variant="outline" size="sm" onClick={logout} className="w-fit bg-transparent">
+                <Button variant="outline" size="sm" onClick={handleLogout} className="w-fit bg-transparent">
                   Logout
                 </Button>
               </div>
@@ -335,7 +339,7 @@ export default function HomePage() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-2">
-              Welcome back, {user?.name || user?.email}!
+              Welcome back, {session?.user?.name || session?.user?.email}!
             </h2>
             <p className="text-lg text-muted-foreground">Find the best fashion deals with our AI-powered search</p>
           </div>
