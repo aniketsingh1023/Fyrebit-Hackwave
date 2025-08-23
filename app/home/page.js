@@ -103,6 +103,105 @@ const offers = [
   },
 ]
 
+const trendingProducts = [
+  {
+    id: 1,
+    name: "Floral Summer Dress",
+    brand: "Zara",
+    price: 2999,
+    originalPrice: 4999,
+    discount: 40,
+    rating: 4.3,
+    reviews: 1250,
+    image: "/summer-floral-dress.png",
+    category: "clothing",
+  },
+  {
+    id: 2,
+    name: "Classic White Sneakers",
+    brand: "Nike",
+    price: 7999,
+    originalPrice: 9999,
+    discount: 20,
+    rating: 4.5,
+    reviews: 2100,
+    image: "/white-sneakers.png",
+    category: "shoes",
+  },
+  {
+    id: 3,
+    name: "Leather Crossbody Bag",
+    brand: "Coach",
+    price: 15999,
+    originalPrice: 19999,
+    discount: 20,
+    rating: 4.7,
+    reviews: 890,
+    image: "/leather-crossbody-bag.png",
+    category: "accessories",
+  },
+  {
+    id: 4,
+    name: "Denim Jacket",
+    brand: "Levi's",
+    price: 3499,
+    originalPrice: 4999,
+    discount: 30,
+    rating: 4.2,
+    reviews: 1560,
+    image: "/classic-denim-jacket.png",
+    category: "clothing",
+  },
+  {
+    id: 5,
+    name: "Gold Chain Necklace",
+    brand: "Pandora",
+    price: 8999,
+    originalPrice: 12999,
+    discount: 31,
+    rating: 4.6,
+    reviews: 670,
+    image: "/gold-chain-necklace.png",
+    category: "jewelry",
+  },
+  {
+    id: 6,
+    name: "Aviator Sunglasses",
+    brand: "Ray-Ban",
+    price: 12999,
+    originalPrice: 15999,
+    discount: 19,
+    rating: 4.8,
+    reviews: 3200,
+    image: "/aviator-sunglasses.png",
+    category: "eyewear",
+  },
+  {
+    id: 7,
+    name: "Black Ankle Boots",
+    brand: "Dr. Martens",
+    price: 16999,
+    originalPrice: 19999,
+    discount: 15,
+    rating: 4.4,
+    reviews: 980,
+    image: "/black-ankle-boots.png",
+    category: "shoes",
+  },
+  {
+    id: 8,
+    name: "Silk Scarf",
+    brand: "Hermès",
+    price: 25999,
+    originalPrice: 29999,
+    discount: 13,
+    rating: 4.9,
+    reviews: 450,
+    image: "/luxury-silk-scarf.png",
+    category: "accessories",
+  },
+]
+
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -339,6 +438,86 @@ export default function HomePage() {
                 </Card>
               )
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Trending Products Section */}
+      <section className="py-12 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">Trending Now</h2>
+            <Button variant="outline" asChild>
+              <Link href="/products">View All Products</Link>
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {trendingProducts.map((product) => (
+              <Card
+                key={product.id}
+                className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer group"
+                asChild
+              >
+                <Link href={`/categories/${product.category}/${product.id}`}>
+                  <div className="relative">
+                    <img
+                      src={product.image || "/placeholder.svg"}
+                      alt={product.name}
+                      className="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 left-2">
+                      <Badge className="bg-primary text-primary-foreground text-xs">{product.discount}% OFF</Badge>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute top-2 right-2 w-8 h-8 p-0 bg-white/80 hover:bg-white"
+                    >
+                      <Heart className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <CardContent className="p-3 md:p-4">
+                    <div className="space-y-2">
+                      <div>
+                        <p className="text-xs text-muted-foreground font-medium">{product.brand}</p>
+                        <h3 className="text-sm md:text-base font-medium text-foreground line-clamp-2 leading-tight">
+                          {product.name}
+                        </h3>
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm md:text-base font-bold text-foreground">
+                          ₹{product.price.toLocaleString()}
+                        </span>
+                        <span className="text-xs md:text-sm text-muted-foreground line-through">
+                          ₹{product.originalPrice.toLocaleString()}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center space-x-1">
+                        <div className="flex items-center space-x-1">
+                          <span className="text-xs font-medium text-foreground">{product.rating}</span>
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <span
+                                key={i}
+                                className={`text-xs ${
+                                  i < Math.floor(product.rating) ? "text-yellow-400" : "text-gray-300"
+                                }`}
+                              >
+                                ★
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <span className="text-xs text-muted-foreground">({product.reviews.toLocaleString()})</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Link>
+              </Card>
+            ))}
           </div>
         </div>
       </section>

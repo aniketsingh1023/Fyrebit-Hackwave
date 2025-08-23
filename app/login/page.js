@@ -14,18 +14,48 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
   const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
+    setError("")
 
-    setTimeout(() => {
-      localStorage.setItem("isAuthenticated", "true")
-      localStorage.setItem("userEmail", email)
-      router.push("/home")
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await response.json()
+      console.log("[v0] Login response:", data) // Added debugging
+
+      if (response.ok) {
+        console.log("[v0] Login successful, setting localStorage") // Added debugging
+        localStorage.setItem("isAuthenticated", "true")
+        localStorage.setItem("userEmail", data.user.email)
+        localStorage.setItem("userName", data.user.name)
+        localStorage.setItem("userId", data.user._id)
+        localStorage.setItem("authToken", data.token)
+
+        console.log("[v0] localStorage set, redirecting to /home") // Added debugging
+
+        setTimeout(() => {
+          router.push("/home")
+        }, 100)
+      } else {
+        setError(data.error || "Login failed")
+      }
+    } catch (error) {
+      console.error("Login error:", error)
+      setError("Network error. Please try again.")
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   return (
@@ -49,6 +79,10 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">{error}</div>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input

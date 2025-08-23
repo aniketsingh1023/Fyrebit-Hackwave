@@ -1,4 +1,5 @@
-import { Metadata } from "next"
+import React from "react"
+import  { Metadata } from "next"
 import { Playfair_Display, Source_Sans_3 } from "next/font/google"
 import "./globals.css"
 
@@ -18,17 +19,13 @@ const sourceSans = Source_Sans_3({
 
 export const metadata = {
   title: "FashionFind - Compare Fashion Prices",
-  description:
-    "Upload images, compare fashion products, and get the best prices across multiple retailers",
+  description: "Upload images, compare fashion products, and get the best prices across multiple retailers",
   generator: "v0.app",
 }
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`${playfair.variable} ${sourceSans.variable} antialiased`}
-    >
+    <html lang="en" className={`${playfair.variable} ${sourceSans.variable} antialiased`}>
       <body className="font-sans">{children}</body>
     </html>
   )

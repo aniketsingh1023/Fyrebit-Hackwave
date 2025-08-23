@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server"
+import { uploadImage } from "@/lib/cloudinary"
+import clientPromise from "@/lib/mongodb"
+import { getTokenFromRequest, verifyToken } from "@/lib/auth"
 
 // Mock AI analysis results
 const mockAnalysisResults = [
@@ -38,6 +41,13 @@ const mockAnalysisResults = [
 
 export async function POST(request) {
   try {
+    const token = getTokenFromRequest(request)
+    const decoded = verifyToken(token)
+
+    if (!decoded) {
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 })
+    }
+
     const formData = await request.formData()
     const file = formData.get("image")
 
@@ -49,6 +59,27 @@ export async function POST(request) {
     if (!file.type.startsWith("image/")) {
       return NextResponse.json({ error: "File must be an image" }, { status: 400 })
     }
+
+    const bytes = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+    const base64 = `data:${file.type};base64,${buffer.toString("base64")}`
+
+    const uploadResult = await uploadImage(base64, "user-uploads")
+
+    const client = await clientPromise
+    const db = client.db("fashion_search")
+    const uploads = db.collection("uploads")
+
+    const uploadRecord = {
+      userId: decoded.userId,
+      originalName: file.name,
+      cloudinaryUrl: uploadResult.url,
+      cloudinaryPublicId: uploadResult.publicId,
+      fileSize: file.size,
+      uploadedAt: new Date(),
+    }
+
+    const result = await uploads.insertOne(uploadRecord)
 
     // Simulate AI processing delay
     await new Promise((resolve) => setTimeout(resolve, 2000))
@@ -75,8 +106,13 @@ export async function POST(request) {
 
     return NextResponse.json({
       success: true,
+      uploadedImage: {
+        url: uploadResult.url,
+        publicId: uploadResult.publicId,
+      },
       analysis: {
         ...randomResult,
+        uploadId: result.insertedId,
         uploadedAt: new Date().toISOString(),
         fileSize: file.size,
         fileName: file.name,
