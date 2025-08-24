@@ -1,299 +1,365 @@
+// app/api/posts/route.js
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import connectDB from "@/lib/mongodb";
 import Post from "@/models/Post";
 import User from "@/models/User";
+import { uploadImage } from "@/lib/cloudinary";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const VALID_CATEGORIES = {
-  "Design & Creative": [
-    "Logo Design",
-    "Brand Identity",
-    "Brochure/Flyer Design",
-    "Business Cards",
-    "Social Media Graphics",
-    "Poster/Banner Design",
-    "Web UI Design",
-    "Mobile App Design",
-    "Dashboard Design",
-    "Design Systems",
-    "Wireframing",
-    "Prototyping (Figma/Adobe XD)",
-    "Explainer Videos",
-    "Kinetic Typography",
-    "Logo Animation",
-    "Reels & Shorts Animation",
-    "3D Product Visualization",
-    "Game Assets",
-    "NFT Art",
-    "Character Modeling",
-    "Character Illustration",
-    "Comic Art",
-    "Children's Book Illustration",
-    "Vector Art",
-    "Acrylic Painting",
-    "Watercolor Painting",
-    "Oil Painting",
-    "Canvas Art",
-    "Pencil Sketches",
-    "Charcoal Drawing",
-    "Ink Illustration",
-    "Line Art",
-    "Hand-drawn Portraits",
-    "Realistic Portraits",
-    "Caricature Art",
-    "Couple & Family Portraits",
-    "Modern Calligraphy",
-    "Custom Lettering",
-    "Name Art",
-    "Collage Art",
-    "Texture Art",
-    "Traditional + Digital Fusion",
-    "Interior Wall Paintings",
-    "Outdoor Murals",
-    "Street Art Concepts",
-  ],
-  "Video & Animation": [
-    "Reels & Shorts Editing",
-    "YouTube Video Editing",
-    "Wedding & Event Videos",
-    "Cinematic Cuts",
-    "2D Animation",
-    "3D Animation",
-    "Whiteboard Animation",
-    "Explainer Videos",
-    "Green Screen Editing",
-    "Color Grading",
-    "Rotoscoping",
-  ],
-  "Writing & Translation": [
-    "Website Copy",
-    "Landing Pages",
-    "Ad Copy",
-    "Sales Copy",
-    "YouTube Scripts",
-    "Instagram Reels",
-    "Podcast Scripts",
-    "Blog Posts",
-    "Technical Writing",
-    "Product Descriptions",
-    "Ghostwriting",
-    "Keyword Research",
-    "On-page Optimization",
-    "Meta Descriptions",
-    "Document Translation",
-    "Subtitling",
-    "Voiceover Scripts",
-  ],
-  "Digital Marketing": [
-    "Meta Ads",
-    "Google Ads",
-    "TikTok Ads",
-    "Funnel Building",
-    "Mailchimp/Klaviyo/HubSpot Campaigns",
-    "Automated Sequences",
-    "Cold Email Writing",
-    "Content Calendars",
-    "Community Engagement",
-    "Brand Strategy",
-    "Technical SEO",
-    "Link Building",
-    "Site Audits",
-    "Influencer research",
-    "UGC Scripts & Briefs",
-  ],
-  "Tech & Development": [
-    "Full Stack Development",
-    "Frontend (React, Next.js)",
-    "Backend (Node.js, Django)",
-    "WordPress/Shopify",
-    "iOS/Android (Flutter, React Native)",
-    "Progressive Web Apps (PWA)",
-    "API Integration",
-    "Webflow",
-    "Bubble",
-    "Softr",
-    "Manual Testing",
-    "Automation Testing",
-    "Test Plan Creation",
-    "AWS / GCP / Azure Setup",
-    "CI/CD Pipelines",
-    "Server Management",
-  ],
-  "AI & Automation": [
-    "AI Blog Generation",
-    "AI Voiceover & Dubbing",
-    "AI Video Scripts",
-    "Talking Head Videos",
-    "Explainer Avatars",
-    "Virtual Influencers",
-    "ChatGPT/Claude Prompt Design",
-    "Midjourney/DALLE Prompts",
-    "Custom GPTs / API Workflows",
-    "Vapi / AutoGPT Setup",
-    "Zapier / Make Integrations",
-    "Custom AI Workflows",
-    "Assistant Building",
-    "GPT App Development",
-    "OpenAI API Integration",
-    "AI-generated Product Renders",
-    "Lifestyle Product Mockups",
-    "Model-less Product Photography",
-    "360° Product Spins (AI-generated)",
-    "AI Backdrop Replacement",
-    "Packaging Mockups (AI-enhanced)",
-    "Virtual Try-On Assets",
-    "Catalog Creation with AI Models",
-    "Product UGC Simulation (AI Actors)",
-  ],
-  "Business & Legal": [
-    "Invoicing & Reconciliation",
-    "Monthly Financial Statements",
-    "Tally / QuickBooks / Zoho Books",
-    "Business Plans",
-    "Startup Financial Decks",
-    "Investor-Ready Models",
-    "GST Filing (India)",
-    "US/UK Tax Filing",
-    "Company Registration Help",
-    "NDA / Founder Agreements",
-    "Employment Contracts",
-    "SaaS Terms & Privacy Policies",
-    "IP & Trademark Filing",
-    "GST Registration",
-    "Pitch Deck Design",
-  ],
-  Portfolio: ["Project"],
-};
+// Initialize Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-function validateCategorySubcategory(category, subCategory) {
-  if (!category || !subCategory) return false;
-  const validSubcategories = VALID_CATEGORIES[category];
-  if (!validSubcategories) return false;
-  return validSubcategories.includes(subCategory);
-}
-
-export async function GET(req) {
+// GET - Get all posts (feed)
+export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const userId = searchParams.get("userId"); // For specific user's posts
+    const type = searchParams.get("type"); // post, reel, story
+
     await connectDB();
 
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId");
-    const category = searchParams.get("category");
-    const subCategory = searchParams.get("subCategory");
-    const page = parseInt(searchParams.get("page")) || 1;
-    const limit = parseInt(searchParams.get("limit")) || 12;
-    const skip = (page - 1) * limit;
+    let query = { isArchived: false };
 
-    let query = { postType: "post" };
+    if (userId) {
+      query.author = userId;
+    }
 
-    if (userId) query.author = userId;
-    if (category) query.category = category;
-    if (subCategory) query.subCategory = subCategory;
+    if (type) {
+      query.type = type;
+    }
+
+    // For stories, only show non-expired ones
+    if (type === "story") {
+      query.$or = [{ expiresAt: null }, { expiresAt: { $gt: new Date() } }];
+    }
 
     const posts = await Post.find(query)
+      .populate("author", "name profileImage firstName lastName")
+      .populate("mentions", "name firstName lastName")
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .populate("author", "name image role profile")
-      .populate("comments.user", "name image")
-      .populate("likes.user", "name image")
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
       .lean();
 
-    const totalPosts = await Post.countDocuments(query);
+    // Add user interaction info if logged in
+    const session = await getServerSession(authOptions);
+    if (session) {
+      posts.forEach((post) => {
+        post.userInteraction = {
+          isLiked:
+            post.likes?.some(
+              (like) => like.user.toString() === session.user.id
+            ) || false,
+          isOwner: post.author._id.toString() === session.user.id,
+        };
+      });
+    }
 
-    return NextResponse.json(
-      {
-        posts,
-        pagination: {
-          total: totalPosts,
-          page,
-          limit,
-          totalPages: Math.ceil(totalPosts / limit),
-        },
+    const total = await Post.countDocuments(query);
+
+    return NextResponse.json({
+      success: true,
+      posts,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+        totalPosts: total,
+        hasMore: page < Math.ceil(total / limit),
       },
-      { status: 200 }
-    );
+    });
   } catch (error) {
     console.error("Posts fetch error:", error);
     return NextResponse.json(
-      {
-        error: "Failed to fetch posts",
-        details: error.message,
-      },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
 }
 
-export async function POST(req) {
+// POST - Create new post with media upload and AI suggestions
+export async function POST(request) {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user) {
+    if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectDB();
 
-    const userId =
-      session.user.userId ||
-      session.user.id ||
-      session.user._id ||
-      session.user.sub;
-    const user = await User.findById(userId);
-
+    // Check if user can create posts (50% profile completion)
+    const user = await User.findById(session.user.id);
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const postData = await req.json();
-
-    postData.author = user._id;
-
-    if (
-      !postData.title ||
-      !postData.description ||
-      !postData.category ||
-      !postData.subCategory
-    ) {
-      return NextResponse.json(
-        { error: "Title, description, category, and subCategory are required" },
-        { status: 400 }
-      );
-    }
-
-    if (!validateCategorySubcategory(postData.category, postData.subCategory)) {
-      return NextResponse.json(
-        { error: "Invalid category and subcategory combination" },
-        { status: 400 }
-      );
-    }
-
-    const newPost = new Post(postData);
-    await newPost.save();
-
-    const populatedPost = await Post.findById(newPost._id)
-      .populate("author", "name image role profile")
-      .lean();
-
-    await User.findByIdAndUpdate(user._id, { $inc: { "stats.postsCount": 1 } });
-
-    return NextResponse.json({ post: populatedPost }, { status: 201 });
-  } catch (error) {
-    console.error("Post creation error:", error);
-    if (error.name === "ValidationError") {
+    const profileCompleteness = calculateProfileCompleteness(user);
+    if (profileCompleteness < 50) {
       return NextResponse.json(
         {
-          error: "Validation failed",
-          details: Object.values(error.errors).map((e) => e.message),
+          error: "Please complete at least 50% of your profile to create posts",
+          profileCompleteness,
         },
+        { status: 403 }
+      );
+    }
+
+    const formData = await request.formData();
+
+    // Extract form data
+    const caption = formData.get("caption") || "";
+    const location = formData.get("location") || "";
+    const type = formData.get("type") || "post";
+    const hashtags = formData.get("hashtags")
+      ? JSON.parse(formData.get("hashtags"))
+      : [];
+    const mentions = formData.get("mentions")
+      ? JSON.parse(formData.get("mentions"))
+      : [];
+    const generateSuggestions = formData.get("generateSuggestions") === "true";
+
+    // Handle media uploads
+    const mediaFiles = formData.getAll("media");
+    const uploadedMedia = [];
+
+    if (mediaFiles.length === 0) {
+      return NextResponse.json(
+        { error: "At least one media file is required" },
         { status: 400 }
       );
     }
+
+    // Upload media files to Cloudinary
+    for (const file of mediaFiles) {
+      if (file instanceof File && file.size > 0) {
+        try {
+          // Convert file to base64 for Cloudinary upload
+          const bytes = await file.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          const base64 = `data:${file.type};base64,${buffer.toString(
+            "base64"
+          )}`;
+
+          // Determine media type and folder
+          const isVideo = file.type.startsWith("video/");
+          const folder = isVideo ? "posts/videos" : "posts/images";
+
+          const uploadResult = await uploadImage(base64, folder);
+
+          uploadedMedia.push({
+            type: isVideo ? "video" : "image",
+            url: uploadResult.url,
+            publicId: uploadResult.publicId,
+            width: uploadResult.width,
+            height: uploadResult.height,
+            mimeType: file.type,
+            size: file.size,
+          });
+        } catch (uploadError) {
+          console.error("Media upload error:", uploadError);
+          return NextResponse.json(
+            { error: "Failed to upload media files" },
+            { status: 500 }
+          );
+        }
+      }
+    }
+
+    // Generate AI suggestions if requested
+    let aiSuggestions = null;
+    if (generateSuggestions && uploadedMedia.length > 0) {
+      try {
+        aiSuggestions = await generateContentSuggestions(
+          uploadedMedia,
+          caption
+        );
+      } catch (aiError) {
+        console.error("AI suggestion error:", aiError);
+        // Don't fail the post creation if AI suggestions fail
+        aiSuggestions = {
+          suggestedCaptions: [],
+          suggestedHashtags: [],
+          error: "AI suggestions unavailable",
+        };
+      }
+    }
+
+    // Extract hashtags from caption
+    const extractedHashtags = caption
+      ? caption
+          .match(/#[a-zA-Z0-9_]+/g)
+          ?.map((tag) => tag.slice(1).toLowerCase()) || []
+      : [];
+
+    const allHashtags = [
+      ...new Set([
+        ...(hashtags || []),
+        ...extractedHashtags,
+        ...(aiSuggestions?.suggestedHashtags || []),
+      ]),
+    ];
+
+    // Set expiry for stories (24 hours)
+    let expiresAt = null;
+    if (type === "story") {
+      expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    }
+
+    const post = new Post({
+      author: session.user.id,
+      caption: caption || aiSuggestions?.suggestedCaptions?.[0] || "",
+      media: uploadedMedia,
+      hashtags: allHashtags,
+      mentions: mentions || [],
+      location,
+      type,
+      expiresAt,
+      aiMetadata: aiSuggestions
+        ? {
+            suggestedCaptions: aiSuggestions.suggestedCaptions,
+            suggestedHashtags: aiSuggestions.suggestedHashtags,
+            contentAnalysis: aiSuggestions.contentAnalysis,
+            generatedAt: new Date(),
+          }
+        : null,
+    });
+
+    await post.save();
+
+    // Populate author details
+    await post.populate("author", "name profileImage firstName lastName");
+    await post.populate("mentions", "name firstName lastName");
+
+    return NextResponse.json({
+      success: true,
+      message: "Post created successfully",
+      post: post.toObject(),
+      aiSuggestions: aiSuggestions,
+    });
+  } catch (error) {
+    console.error("Post creation error:", error);
     return NextResponse.json(
-      { error: "Failed to create post", details: error.message },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
+}
+
+// Generate content suggestions using Gemini AI
+async function generateContentSuggestions(mediaFiles, existingCaption = "") {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    // Analyze the first media file (image or video thumbnail)
+    const firstMedia = mediaFiles[0];
+
+    let prompt = `Analyze this ${firstMedia.type} and provide content suggestions for a social media post. 
+
+Please provide:
+1. 3 engaging caption options (keep them under 150 characters each)
+2. 5-8 relevant hashtags (without the # symbol)
+3. Brief content analysis describing what you see
+
+Current caption context: "${existingCaption}"
+
+Format your response as JSON:
+{
+  "suggestedCaptions": ["caption1", "caption2", "caption3"],
+  "suggestedHashtags": ["hashtag1", "hashtag2", "hashtag3"],
+  "contentAnalysis": "Brief description of the content"
+}`;
+
+    let result;
+
+    if (firstMedia.type === "image") {
+      // For images, we can analyze the visual content
+      const imageResponse = await fetch(firstMedia.url);
+      const imageBuffer = await imageResponse.arrayBuffer();
+
+      result = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            data: Buffer.from(imageBuffer).toString("base64"),
+            mimeType: firstMedia.mimeType,
+          },
+        },
+      ]);
+    } else {
+      // For videos, provide suggestions based on context
+      prompt += `\n\nNote: This is a video file. Please provide general engaging social media captions and hashtags suitable for video content.`;
+
+      result = await model.generateContent(prompt);
+    }
+
+    const response = result.response.text();
+
+    // Try to parse JSON response
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]);
+      }
+    } catch (parseError) {
+      console.error("JSON parsing error:", parseError);
+    }
+
+    // Fallback: extract suggestions manually
+    return {
+      suggestedCaptions: [
+        "Share your moment ✨",
+        "Capturing life's beautiful details",
+        "Every picture tells a story",
+      ],
+      suggestedHashtags: [
+        "lifestyle",
+        "moment",
+        "photography",
+        "share",
+        "life",
+      ],
+      contentAnalysis: "AI analysis temporarily unavailable",
+    };
+  } catch (error) {
+    console.error("Gemini API error:", error);
+    throw new Error("Failed to generate AI suggestions");
+  }
+}
+
+function calculateProfileCompleteness(user) {
+  let completeness = 0;
+  const fields = [
+    "name",
+    "firstName",
+    "lastName",
+    "phone",
+    "dateOfBirth",
+    "gender",
+    "address.city",
+    "profileImage",
+    "preferences.categories",
+  ];
+
+  fields.forEach((field) => {
+    if (field.includes(".")) {
+      const [parent, child] = field.split(".");
+      if (
+        user[parent] &&
+        user[parent][child] &&
+        (Array.isArray(user[parent][child])
+          ? user[parent][child].length > 0
+          : true)
+      ) {
+        completeness += 100 / fields.length;
+      }
+    } else {
+      if (user[field]) completeness += 100 / fields.length;
+    }
+  });
+
+  return Math.round(completeness);
 }
