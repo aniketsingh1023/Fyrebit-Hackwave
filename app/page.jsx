@@ -199,36 +199,60 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-primary/5">
-        <div className="container mx-auto text-center max-w-3xl">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">Ready to Start Saving?</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Join thousands of smart shoppers who use FashionFind to get the best deals on fashion.
-          </p>
-          <Button size="lg" className="text-lg px-8 py-6" asChild>
-            <Link href="/login">
-              Sign Up Now - It's Free
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Link>
-          </Button>
-        </div>
-      </section>
+   
+{/* CTA Section */}
+<section id="cta" className="py-20 px-6" style={{ backgroundColor: "#EBD5B8" }}>
+  <div className="container mx-auto max-w-4xl relative">
+    
+    {/* Title with underline */}
+    <div className="mb-10 text-center relative">
+      <div className="text-4xl md:text-5xl font-serif font-bold text-foreground inline-block relative">
+        WalkThrough
+        <span className="text-white-600 text-4xl inline-block ml-2">▶</span>
+        {/* Decorative underline */}
+        <span className="block w-24 h-1 bg-white mx-auto mt-4 rounded-full"></span>
+      </div>
+    </div>
+
+    {/* Video Box */}
+    <div
+      className="relative mx-auto rounded-3xl overflow-hidden shadow-2xl border border-border"
+      style={{ maxWidth: "720px" }}
+    >
+      <div className="aspect-video bg-white/80 flex items-center justify-center">
+        <iframe
+          className="w-full h-full"
+          src="https://www.youtube.com/embed/9Ftc719VHuE"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Footer */}
-      <footer className="border-t border-border py-8 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-              <Search className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="font-serif font-bold text-foreground">FashionFind</span>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            © 2024 FashionFind. All rights reserved. Find the best fashion deals instantly.
-          </p>
-        </div>
-      </footer>
+   
+<footer className="py-8 px-4" style={{ backgroundColor: "black" }}>
+  <div className="container mx-auto text-center">
+    <div className="flex items-center justify-center space-x-2 mb-4">
+      <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
+        <Search className="w-4 h-4 text-[#EBD5B8]" />
+      </div>
+      <span className="font-serif font-bold text-white">Wearly</span>
+    </div>
+    <p className="text-sm text-white">
+      © 2024 FashionFind. All rights reserved. Find the best fashion deals instantly.
+    </p>
+  </div>
+</footer>
+
     </div>
   )
 }
+
+
+  
