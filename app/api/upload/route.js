@@ -2,12 +2,10 @@ import { NextResponse } from "next/server"
 import { uploadImage } from "@/lib/cloudinary"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import Upload from "../../../models/Upload"
-
-
-
+import Trends from "@/models/Trends"
 import { connectDB } from "@/lib/mongodb"
 import mongoose from "mongoose"
-import { scrapeMyntraProducts } from "@/lib/myntra-scraper"
+import { scrapeAllFashionSites } from "@/lib/myntra-scraper"  // use master scraper instead of only Myntra
 
 const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null
 
@@ -131,48 +129,60 @@ export async function POST(request) {
 
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
     if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        {
-          error: "Invalid file type. Please upload JPEG, PNG, or WebP images only.",
-        },
-        { status: 400 },
-      )
+      return NextResponse.json({ error: "Invalid file type" }, { status: 400 })
     }
 
     const maxSize = 10 * 1024 * 1024 // 10MB
     if (file.size > maxSize) {
-      return NextResponse.json(
-        {
-          error: "File too large. Please upload images smaller than 10MB.",
-        },
-        { status: 400 },
-      )
+      return NextResponse.json({ error: "File too large" }, { status: 400 })
     }
 
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
     const base64 = `data:${file.type};base64,${buffer.toString("base64")}`
 
+    // 1️⃣ Upload to Cloudinary
     const uploadResult = await uploadImage(base64, "fashion-analysis")
 
+    // 2️⃣ Analyze image with Gemini
     const analysis = await analyzeImageWithGemini(base64, file.type)
 
-    const products = await scrapeMyntraProducts(analysis.suggestedSearch, 20)
+    // 3️⃣ Scrape across multiple platforms
+    const products = await scrapeAllFashionSites(analysis.suggestedSearch, 20)
 
+    // 4️⃣ Sort and save top 5 in Trends collection
     await connectDB()
 
+    const sorted = products
+      .filter(p => p.price && !isNaN(Number(p.price.replace(/[^\d]/g, ""))))
+      .sort((a, b) => {
+        const pa = Number(a.price.replace(/[^\d]/g, ""))
+        const pb = Number(b.price.replace(/[^\d]/g, ""))
+        return pa - pb
+      })
+
+    const topFive = sorted.slice(0, 5)
+
+    await Trends.findOneAndUpdate(
+      { searchQuery: analysis.suggestedSearch },
+      { searchQuery: analysis.suggestedSearch, products: topFive },
+      { upsert: true, new: true }
+    )
+
+    // 5️⃣ Save Upload record
     const uploadRecord = new Upload({
-      userId: new mongoose.Types.ObjectId(), // Temporary - will be replaced with actual user ID from session
+      userId: new mongoose.Types.ObjectId(), // TODO: replace with session user
       originalName: file.name,
       cloudinaryUrl: uploadResult.url,
       cloudinaryPublicId: uploadResult.publicId,
       fileSize: file.size,
       analysis: analysis,
-      scrapedProducts: products, // Store scraped products
+      scrapedProducts: products, // store all scraped products
     })
 
     const savedUpload = await uploadRecord.save()
 
+    // 6️⃣ Respond to client
     return NextResponse.json({
       success: true,
       uploadedImage: {
@@ -188,17 +198,17 @@ export async function POST(request) {
         fileSize: file.size,
         fileName: file.name,
       },
-      products: products, // Return scraped products
-      message: "Image uploaded, analyzed, and products scraped successfully",
+      products,
+      message: "Image uploaded, analyzed, and top trends saved successfully",
     })
   } catch (error) {
     console.error("Upload analysis error:", error)
     return NextResponse.json(
       {
-        error: "Failed to process image. Please try again.",
+        error: "Failed to process image",
         details: process.env.NODE_ENV === "development" ? error.message : undefined,
       },
-      { status: 500 },
+      { status: 500 }
     )
   }
 }
