@@ -243,17 +243,27 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+      {/* <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Search className="w-5 h-5 text-primary-foreground" />
               </div>
-              <h1 className="text-xl font-serif font-bold text-foreground">FashionFind</h1>
-            </div>
-
+              <h1 className="text-xl font-serif font-bold text-foreground"><Wearly></Wearly></h1>
+            </div>  */}
+      <nav className="sticky top-3 z-50 mx-4 rounded-3xl bg-background/80 backdrop-blur-md border border-border shadow-lg hover:shadow-xl transition-all duration-300">
+  <div className="container mx-auto px-6">
+    <div className="flex items-center justify-between h-16">
+      {/* Logo */}
+      <div className="flex items-center space-x-2">
+        <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center shadow-inner">
+          <Search className="w-5 h-5 text-primary-foreground" />
+        </div>
+        <h1 className="text-2xl font-serif font-bold text-foreground">FashionFind</h1>
+      </div>
+      
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/home" className="text-foreground hover:text-primary transition-colors">
@@ -370,7 +380,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Offers Section */}
+      {/* Offers Section
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center justify-between mb-8">
@@ -396,9 +406,9 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* Categories Section */}
+      {/* Categories Section
       <section className="py-12 px-4 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
@@ -444,9 +454,9 @@ export default function HomePage() {
             })}
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* Trending Products Section */}
+      {/* Trending Products Section
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center justify-between mb-8">
@@ -524,7 +534,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Quick Actions */}
       <section className="py-12 px-4">
