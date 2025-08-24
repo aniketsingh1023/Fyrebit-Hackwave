@@ -96,111 +96,106 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 relative bg-amber-50">
-        <div className="absolute inset-0 opacity-15">
-          <div
-            className="h-full w-full"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(0,0,0,0.8) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.8) 1px, transparent 1px)
-              `,
-              backgroundSize: "50px 50px",
-            }}
-          />
-        </div>
+<section
+  id="features"
+  className="py-20 px-4 relative bg-cover bg-center"
+  style={{ backgroundImage: "url('/paper.jpg')" }}
+>
+  {/* Optional dark overlay for readability */}
+  <div className="absolute inset-0 bg-black/50"></div>
 
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-Jersey10 font-bold text-black mb-6">
-              Why Choose Wearly?
-            </h2>
-            <p className="text-2xl text-gray-700 max-w-3xl mx-auto font-light">
-              Discover the power of AI-driven fashion search
-            </p>
-          </div>
+  <div className="container mx-auto max-w-6xl relative z-10">
+    <div className="text-center mb-16">
+      <h2 className="text-5xl md:text-6xl font-Jersey10 font-bold text-white mb-6">
+        Why Choose Wearly?
+      </h2>
+      <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light">
+        Discover the power of AI-driven fashion search
+      </p>
+    </div>
 
-          <div className="flex justify-center">
-            <div className="w-full max-w-3xl">
-              <CardSwiperClient className="space-y-6" cardsToShow={1} loop={true}>
-                <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
-                  <div className="text-center">
-                    <img
-                      src="image.png"
-                      alt="AI Fashion Recognition"
-                      className="w-full h-72 object-cover rounded-xl mb-6"
-                    />
-                    <div className="flex items-center justify-center space-x-3 mb-4">
-                      <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-                        <Search className="w-7 h-7 text-black" />
-                      </div>
-                      <h3 className="font-serif font-bold text-black text-2xl">Smart Image Recognition</h3>
-                    </div>
-                    <p className="text-gray-600 text-lg leading-relaxed">
-                      Advanced AI technology identifies fashion items from any photo with incredible accuracy and style
-                      understanding.
-                    </p>
-                  </div>
-                </Card>
-
-                <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
-                  <div className="text-center">
-                    <img
-                      src="img2.png"
-                      alt="Price Comparison"
-                      className="w-full h-72 object-cover rounded-xl mb-6"
-                    />
-                    <div className="flex items-center justify-center space-x-3 mb-4">
-                      <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-                        <DollarSign className="w-7 h-7 text-black" />
-                      </div>
-                      <h3 className="font-serif font-bold text-black text-2xl">Real-Time Price Comparison</h3>
-                    </div>
-                    <p className="text-gray-600 text-lg leading-relaxed">
-                      Compare prices across dozens of popular fashion retailers in real-time to find the perfect deal.
-                    </p>
-                  </div>
-                </Card>
-
-                <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
-                  <div className="text-center">
-                    <img
-                      src="img5.jpg"
-                      alt="Save Money"
-                      className="w-full h-72 object-cover rounded-xl mb-6"
-                    />
-                    <div className="flex items-center justify-center space-x-3 mb-4">
-                      <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-                        <Upload className="w-7 h-7 text-black" />
-                      </div>
-                      <h3 className="font-serif font-bold text-black text-2xl">Save Money & Time</h3>
-                    </div>
-                    <p className="text-gray-600 text-lg leading-relaxed">
-                      Find the best deals without manually searching multiple websites or stores.
-                    </p>
-                  </div>
-                </Card>
-              </CardSwiperClient>
+    <div className="flex justify-center">
+      <div className="w-full max-w-3xl">
+        <CardSwiperClient className="space-y-6" cardsToShow={1} loop={true}>
+          <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
+            <div className="text-center">
+              <img
+                src="image.png"
+                alt="AI Fashion Recognition"
+                className="w-full h-72 object-cover rounded-xl mb-6"
+              />
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                  <Search className="w-7 h-7 text-black" />
+                </div>
+                <h3 className="font-serif font-bold text-black text-2xl">
+                  Smart Image Recognition
+                </h3>
+              </div>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                Advanced AI technology identifies fashion items from any photo
+                with incredible accuracy and style understanding.
+              </p>
             </div>
-          </div>
-        </div>
-      </section>
+          </Card>
+
+          <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
+            <div className="text-center">
+              <img
+                src="img2.png"
+                alt="Price Comparison"
+                className="w-full h-72 object-cover rounded-xl mb-6"
+              />
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                  <DollarSign className="w-7 h-7 text-black" />
+                </div>
+                <h3 className="font-serif font-bold text-black text-2xl">
+                  Real-Time Price Comparison
+                </h3>
+              </div>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                Compare prices across dozens of popular fashion retailers
+                in real-time to find the perfect deal.
+              </p>
+            </div>
+          </Card>
+
+          <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
+            <div className="text-center">
+              <img
+                src="img5.jpg"
+                alt="Save Money"
+                className="w-full h-72 object-cover rounded-xl mb-6"
+              />
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                  <Upload className="w-7 h-7 text-black" />
+                </div>
+                <h3 className="font-serif font-bold text-black text-2xl">
+                  Save Money & Time
+                </h3>
+              </div>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                Find the best deals without manually searching multiple
+                websites or stores.
+              </p>
+            </div>
+          </Card>
+        </CardSwiperClient>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* WalkThrough Section */}
       <section
         className="py-16 px-4 sm:py-20 sm:px-6 bg-cover bg-center"
-        style={{ backgroundImage: "url('/yt.jpg')" }}
+        style={{ backgroundImage: "url('/yt.png')" }}
       >
         <div className="container mx-auto max-w-5xl relative">
-          <div className="mb-8 sm:mb-12 text-center relative">
-            <div className="inline-block bg-black px-4 py-4 sm:px-8 sm:py-6 rounded-xl shadow-lg">
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-white italic leading-snug">
-                WalkThrough
-                <span className="text-white text-3xl sm:text-5xl inline-block ml-2 sm:ml-4">▶</span>
-              </h2>
-              <div className="block w-20 sm:w-32 h-1.5 sm:h-2 bg-white mx-auto mt-4 sm:mt-6 rounded-full"></div>
-            </div>
-          </div>
+          
 
           <div
             className="relative mx-auto rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-white"
