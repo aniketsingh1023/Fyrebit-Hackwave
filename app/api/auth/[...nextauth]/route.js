@@ -4,7 +4,7 @@ import connectDB from "@/lib/mongodb"
 import User from "@/models/User"
 import { comparePassword } from "@/lib/auth"
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -53,6 +53,8 @@ const handler = NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET || process.env.JWT_SECRET,
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

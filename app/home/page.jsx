@@ -21,6 +21,8 @@ import {
   Glasses,
   Footprints,
   Gem,
+  Camera,
+  Sparkles,
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -152,54 +154,6 @@ const trendingProducts = [
     image: "/classic-denim-jacket.png",
     category: "clothing",
   },
-  {
-    id: 5,
-    name: "Gold Chain Necklace",
-    brand: "Pandora",
-    price: 8999,
-    originalPrice: 12999,
-    discount: 31,
-    rating: 4.6,
-    reviews: 670,
-    image: "/gold-chain-necklace.png",
-    category: "jewelry",
-  },
-  {
-    id: 6,
-    name: "Aviator Sunglasses",
-    brand: "Ray-Ban",
-    price: 12999,
-    originalPrice: 15999,
-    discount: 19,
-    rating: 4.8,
-    reviews: 3200,
-    image: "/aviator-sunglasses.png",
-    category: "eyewear",
-  },
-  {
-    id: 7,
-    name: "Black Ankle Boots",
-    brand: "Dr. Martens",
-    price: 16999,
-    originalPrice: 19999,
-    discount: 15,
-    rating: 4.4,
-    reviews: 980,
-    image: "/black-ankle-boots.png",
-    category: "shoes",
-  },
-  {
-    id: 8,
-    name: "Silk Scarf",
-    brand: "Hermès",
-    price: 25999,
-    originalPrice: 29999,
-    discount: 13,
-    rating: 4.9,
-    reviews: 450,
-    image: "/luxury-silk-scarf.png",
-    category: "accessories",
-  },
 ]
 
 export default function HomePage() {
@@ -242,29 +196,16 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      {/* <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+      <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            {/* <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Search className="w-5 h-5 text-primary-foreground" />
               </div>
-              <h1 className="text-xl font-serif font-bold text-foreground"><Wearly></Wearly></h1>
-            </div>  */}
-      <nav className="sticky top-3 z-50 mx-4 rounded-3xl bg-background/80 backdrop-blur-md border border-border shadow-lg hover:shadow-xl transition-all duration-300">
-  <div className="container mx-auto px-6">
-    <div className="flex items-center justify-between h-16">
-      {/* Logo */}
-      <div className="flex items-center space-x-2">
-        <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center shadow-inner">
-          <Search className="w-5 h-5 text-primary-foreground" />
-        </div>
-        <h1 className="text-2xl font-serif font-bold text-foreground">Wearly</h1>
-      </div>
-      
-            {/* Desktop Navigation */}
+              <h1 className="text-xl font-serif font-bold text-foreground">FashionFind</h1>
+            </div>
+
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/home" className="text-foreground hover:text-primary transition-colors">
                 Home
@@ -280,7 +221,6 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* User Menu */}
             <div className="hidden md:flex items-center space-x-4">
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/wishlist">
@@ -302,7 +242,6 @@ export default function HomePage() {
               </Button>
             </div>
 
-            {/* Mobile Menu Button */}
             <Button
               variant="ghost"
               size="sm"
@@ -313,7 +252,6 @@ export default function HomePage() {
             </Button>
           </div>
 
-          {/* Mobile Menu */}
           {isMobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-border">
               <div className="flex flex-col space-y-3">
@@ -344,7 +282,6 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Welcome Section */}
       <section className="py-8 px-4 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-8">
@@ -354,7 +291,6 @@ export default function HomePage() {
             <p className="text-lg text-muted-foreground">Find the best fashion deals with our AI-powered search</p>
           </div>
 
-          {/* Search Bar */}
           <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-8">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -380,9 +316,226 @@ export default function HomePage() {
         </div>
       </section>
 
-   
+      <section className="py-12 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground mb-4">Visual Search</h2>
+            <p className="text-lg text-muted-foreground">Upload any fashion image and find similar items instantly</p>
+          </div>
 
-      {/* Quick Actions */}
+          <Card
+            className="max-w-4xl mx-auto overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer"
+            asChild
+          >
+            <Link href="/upload">
+              <div className="relative bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 p-8 md:p-12">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 group-hover:from-primary/10 group-hover:to-secondary/10 transition-all duration-300" />
+
+                <div className="relative z-10 text-center">
+                  <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Camera className="w-10 h-10 text-primary" />
+                  </div>
+
+                  <h3 className="text-2xl md:text-3xl font-serif font-bold text-foreground mb-4">
+                    AI-Powered Fashion Search
+                  </h3>
+
+                  <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
+                    Simply upload a photo of any fashion item and our AI will analyze it to find similar products with
+                    the best prices across multiple retailers
+                  </p>
+
+                  <div className="flex items-center justify-center space-x-8 mb-8">
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <Upload className="w-6 h-6 text-primary" />
+                      </div>
+                      <p className="text-sm font-medium text-foreground">Upload Image</p>
+                    </div>
+
+                    <div className="w-8 h-px bg-border"></div>
+
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <Sparkles className="w-6 h-6 text-secondary" />
+                      </div>
+                      <p className="text-sm font-medium text-foreground">AI Analysis</p>
+                    </div>
+
+                    <div className="w-8 h-px bg-border"></div>
+
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <Search className="w-6 h-6 text-accent" />
+                      </div>
+                      <p className="text-sm font-medium text-foreground">Find Similar</p>
+                    </div>
+                  </div>
+
+                  <Button size="lg" className="group-hover:scale-105 transition-transform duration-300">
+                    <Camera className="w-5 h-5 mr-2" />
+                    Start Visual Search
+                  </Button>
+                </div>
+              </div>
+            </Link>
+          </Card>
+        </div>
+      </section>
+
+      <section className="py-12 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">Special Offers</h2>
+            <Button variant="outline" asChild>
+              <Link href="/deals">View All Deals</Link>
+            </Button>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {offers.map((offer) => (
+              <Card key={offer.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="relative">
+                  <img src={offer.image || "/placeholder.svg"} alt={offer.title} className="w-full h-40 object-cover" />
+                  <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground">{offer.discount}</Badge>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-serif font-bold text-foreground mb-2">{offer.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{offer.description}</p>
+                  <p className="text-xs text-muted-foreground">Valid until {offer.validUntil}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground mb-4">Shop by Category</h2>
+            <p className="text-lg text-muted-foreground">Discover the best deals across all fashion categories</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((category) => {
+              const IconComponent = category.icon
+              return (
+                <Card
+                  key={category.id}
+                  className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer group"
+                  asChild
+                >
+                  <Link href={`/categories/${category.id}`}>
+                    <div className="relative">
+                      <img
+                        src={category.image || "/placeholder.svg"}
+                        alt={category.name}
+                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
+                      <div className="absolute top-4 left-4">
+                        <div className="w-10 h-10 bg-white/90 rounded-lg flex items-center justify-center">
+                          <IconComponent className="w-5 h-5 text-primary" />
+                        </div>
+                      </div>
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-xl font-serif font-bold text-foreground">{category.name}</h3>
+                        <Badge variant="secondary" className="text-xs">
+                          {category.itemCount}
+                        </Badge>
+                      </div>
+                      <p className="text-muted-foreground">{category.description}</p>
+                    </CardContent>
+                  </Link>
+                </Card>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">Trending Now</h2>
+            <Button variant="outline" asChild>
+              <Link href="/products">View All Products</Link>
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {trendingProducts.map((product) => (
+              <Card
+                key={product.id}
+                className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer group"
+                asChild
+              >
+                <Link href={`/categories/${product.category}/${product.id}`}>
+                  <div className="relative">
+                    <img
+                      src={product.image || "/placeholder.svg"}
+                      alt={product.name}
+                      className="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute top-2 left-2">
+                      <Badge className="bg-primary text-primary-foreground text-xs">{product.discount}% OFF</Badge>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute top-2 right-2 w-8 h-8 p-0 bg-white/80 hover:bg-white"
+                    >
+                      <Heart className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <CardContent className="p-3 md:p-4">
+                    <div className="space-y-2">
+                      <div>
+                        <p className="text-xs text-muted-foreground font-medium">{product.brand}</p>
+                        <h3 className="text-sm md:text-base font-medium text-foreground line-clamp-2 leading-tight">
+                          {product.name}
+                        </h3>
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm md:text-base font-bold text-foreground">
+                          ₹{product.price.toLocaleString()}
+                        </span>
+                        <span className="text-xs md:text-sm text-muted-foreground line-through">
+                          ₹{product.originalPrice.toLocaleString()}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center space-x-1">
+                        <div className="flex items-center space-x-1">
+                          <span className="text-xs font-medium text-foreground">{product.rating}</span>
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <span
+                                key={i}
+                                className={`text-xs ${
+                                  i < Math.floor(product.rating) ? "text-yellow-400" : "text-gray-300"
+                                }`}
+                              >
+                                ★
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <span className="text-xs text-muted-foreground">({product.reviews.toLocaleString()})</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Link>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="grid md:grid-cols-2 gap-6">
