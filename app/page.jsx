@@ -10,6 +10,7 @@ import { CardSwiperClient } from "@/components/card-swiper-client"
 export default function LandingPage() {
   const [isOpen, setIsOpen] = useState(false)
 
+  
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#F5F1E8" }}>
       {/* Floating Rounded Navbar (Top-Right) */}
