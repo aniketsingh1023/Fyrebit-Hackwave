@@ -450,5 +450,52 @@
       "link": "https://www.myntra.com/shirts/cove+and+lane/cove-and-lane-kensignton-relaxed-cotton-linen-casual-shirt/35779569/buy",
       "source": "Myntra"
     }
+  ],
+  "grey canvas messenger bag with brown leather straps": [
+    {
+      "name": "REDHORNS Leather Solid Messenger Bag",
+      "originalPrice": "₹2999",
+      "discountedPrice": "₹929",
+      "price": "₹929",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/2025/MARCH/11/aST0jvNX_adeb11529362475a84bfc1101bf36867.jpg",
+      "link": "https://www.myntra.com/messenger-bag/redhorns/redhorns-unisex-leather-solid-messenger-bag/33146179/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "Veneer Men Messenger Bag",
+      "originalPrice": "₹3699",
+      "discountedPrice": "₹998",
+      "price": "₹998",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/21635548/2023/1/20/22cbf83b-f1f8-4894-ad13-0b533cc1925d1674229426385VeneerUnisexBrownMessengerBag2.jpg",
+      "link": "https://www.myntra.com/messenger-bag/veneer/veneer-men-casual-crossbody-sling-bag/21635548/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "SPOTIC Unisex Leather Messenger Bag",
+      "originalPrice": "₹2199",
+      "discountedPrice": "₹999",
+      "price": "₹999",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/2025/JULY/18/xz9nz0sO_27c74683645e4a1d8aa345b1eac9437e.jpg",
+      "link": "https://www.myntra.com/messenger-bag/spotic/spotic-unisex-textured-leather-messenger-bag/35774582/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "WALRUS",
+      "originalPrice": "₹3599",
+      "discountedPrice": "₹1076",
+      "price": "₹1076",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20240707/Zb9T/668a99626f60443f3195885c/walrus_grey_men_messenger_bag_with_adjustable_strap.jpg",
+      "link": "https://www.ajio.com/walrus-men-messenger-bag-with-adjustable-strap-/p/700170216_grey?",
+      "source": "Ajio"
+    },
+    {
+      "name": "WALRUS",
+      "originalPrice": "₹4949",
+      "discountedPrice": "₹1096",
+      "price": "₹1096",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20240628/t6qO/667ee5bd6f60443f31f3ef9e/walrus_brown_men_padded_messenger_bag.jpg",
+      "link": "https://www.ajio.com/walrus-men-padded-messenger-bag/p/700138877_brown?",
+      "source": "Ajio"
+    }
   ]
 }

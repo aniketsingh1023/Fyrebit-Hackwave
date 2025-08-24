@@ -63,6 +63,7 @@ export default function PostsPage() {
   const [generateSuggestions, setGenerateSuggestions] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState(null);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [downloadMessage, setDownloadMessage] = useState("");
 
   // Comments state
   const [comments, setComments] = useState([]);
@@ -95,6 +96,33 @@ export default function PostsPage() {
       </svg>
     </div>
   );
+  const DownloadMessage = () =>
+    downloadMessage && (
+      <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-green-800 border border-green-600 text-green-100 px-6 py-3 rounded-lg shadow-lg animate-in slide-in-from-top duration-300">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+            <svg
+              className="w-3 h-3 text-white"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <p className="text-sm font-light">{downloadMessage}</p>
+          <button
+            onClick={() => setDownloadMessage("")}
+            className="ml-2 text-green-300 hover:text-green-100"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      </div>
+    );
 
   const fetchPosts = async (pageNum = 1, reset = false) => {
     try {
@@ -176,6 +204,40 @@ export default function PostsPage() {
 
     setMediaFiles(validFiles);
     setCreateError("");
+  };
+
+  const downloadImage = async (post, mediaIndex = 0) => {
+    if (!session) return;
+
+    try {
+      const res = await fetch(
+        `/api/posts/${post._id}/download?mediaIndex=${mediaIndex}`
+      );
+      const data = await res.json();
+
+      if (data.success) {
+        // Create download link
+        const link = document.createElement("a");
+        link.href = data.downloadUrl;
+        link.download = data.filename;
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Show success message
+        setDownloadMessage(data.message);
+
+        // Hide message after 5 seconds
+        setTimeout(() => {
+          setDownloadMessage("");
+        }, 5000);
+      } else {
+        console.error("Download failed:", data.error);
+      }
+    } catch (error) {
+      console.error("Download error:", error);
+    }
   };
 
   const generateAISuggestions = async () => {
@@ -404,6 +466,7 @@ export default function PostsPage() {
   return (
     <div className="min-h-screen bg-black text-stone-100 relative">
       <MinimalDoodles />
+      <DownloadMessage />
       <Navigation />
 
       {/* Header */}
@@ -524,8 +587,7 @@ export default function PostsPage() {
                           </span>
                           <input
                             type="file"
-                            multiple
-                            accept="image/*,video/*"
+                            accept="image/*"
                             onChange={handleMediaUpload}
                             className="hidden"
                           />
@@ -842,6 +904,36 @@ export default function PostsPage() {
                             >
                               <Share2 size={14} />
                             </button>
+
+                            {/* Download Button - Only show if post has images */}
+                            {session &&
+                              post.media &&
+                              post.media.some(
+                                (media) => media.type === "image"
+                              ) && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    downloadImage(post, 0); // Download first image
+                                  }}
+                                  className="flex items-center gap-1 text-stone-600 hover:text-blue-500 transition-colors"
+                                  title="Download image"
+                                >
+                                  <svg
+                                    className="w-3.5 h-3.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                    />
+                                  </svg>
+                                </button>
+                              )}
                           </div>
 
                           <div className="flex items-center gap-1 text-stone-500">
@@ -947,14 +1039,39 @@ export default function PostsPage() {
                       {selectedPost.media.map((media, index) => (
                         <div
                           key={index}
-                          className="bg-stone-700 rounded overflow-hidden"
+                          className="bg-stone-700 rounded overflow-hidden relative group"
                         >
                           {media.type === "image" ? (
-                            <img
-                              src={media.url}
-                              alt="Post media"
-                              className="w-full h-auto object-cover"
-                            />
+                            <>
+                              <img
+                                src={media.url}
+                                alt="Post media"
+                                className="w-full h-auto object-cover"
+                              />
+                              {session && (
+                                <button
+                                  onClick={() =>
+                                    downloadImage(selectedPost, index)
+                                  }
+                                  className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                                  title="Download image"
+                                >
+                                  <svg
+                                    className="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                    />
+                                  </svg>
+                                </button>
+                              )}
+                            </>
                           ) : media.type === "video" ? (
                             <video
                               src={media.url}
