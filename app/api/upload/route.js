@@ -1,108 +1,88 @@
-import { NextResponse } from "next/server"
-import { uploadImage } from "@/lib/cloudinary"
-import clientPromise from "@/lib/mongodb"
-import { getTokenFromRequest, verifyToken } from "@/lib/auth"
+// app/api/upload/route.js
+import { NextResponse } from "next/server";
+import { uploadImage } from "@/lib/cloudinary";
+import { getTokenFromRequest, verifyToken } from "@/lib/auth";
+import Upload from "@/lib/models/upload";
+import connectDB from "@/lib/mongodb";
+import { scrapeMyntra } from "@/lib/myntraScraper";
+import axios from "axios";
 
-// Mock AI analysis results
-const mockAnalysisResults = [
-  {
-    productName: "Floral Summer Dress",
-    category: "clothing",
-    subcategory: "dresses",
-    confidence: 0.92,
-    estimatedPrice: 85.99,
-    similarProducts: [
-      {
-        id: 1,
-        name: "Summer Floral Dress",
-        price: 89.99,
-        image: "/summer-floral-dress.png",
-        similarity: 0.95,
+/**
+ * Analyze image using Gemini (cheapest image-capable model)
+ */
+async function analyzeImageWithGemini(imageUrl) {
+  const url =
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1-small:generateContent";
+
+  const response = await axios.post(
+    url,
+    {
+      prompt:
+        "Identify the main fashion item in this image and suggest a short search query. Respond only in JSON: { \"suggestedSearch\": \"...\" }",
+      image: {
+        imageUri: imageUrl,
       },
-    ],
-  },
-  {
-    productName: "Denim Jacket",
-    category: "clothing",
-    subcategory: "jackets",
-    confidence: 0.88,
-    estimatedPrice: 75.99,
-    similarProducts: [
-      {
-        id: 2,
-        name: "Classic Denim Jacket",
-        price: 79.99,
-        image: "/classic-denim-jacket.png",
-        similarity: 0.91,
+      maxOutputTokens: 100,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.GEMINI_API_KEY}`,
+        "Content-Type": "application/json",
       },
-    ],
-  },
-]
+    }
+  );
+
+  const raw = response.data?.candidates?.[0]?.content;
+  if (!raw) throw new Error("No Gemini response");
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    throw new Error("Failed to parse Gemini response");
+  }
+}
 
 export async function POST(request) {
   try {
-    const token = getTokenFromRequest(request)
-    const decoded = verifyToken(token)
+    // Authenticate user
+    const token = getTokenFromRequest(request);
+    const decoded = verifyToken(token);
+    if (!decoded)
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
 
-    if (!decoded) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 })
-    }
+    // Get uploaded file
+    const formData = await request.formData();
+    const file = formData.get("image");
+    if (!file) return NextResponse.json({ error: "No image file" }, { status: 400 });
+    if (!file.type.startsWith("image/"))
+      return NextResponse.json({ error: "File must be an image" }, { status: 400 });
 
-    const formData = await request.formData()
-    const file = formData.get("image")
+    // Convert to base64 for Cloudinary
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-    if (!file) {
-      return NextResponse.json({ error: "No image file provided" }, { status: 400 })
-    }
+    // Upload to Cloudinary
+    const uploadResult = await uploadImage(base64, "user-uploads");
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      return NextResponse.json({ error: "File must be an image" }, { status: 400 })
-    }
+    // Analyze image with Gemini using the Cloudinary URL
+    const analysis = await analyzeImageWithGemini(uploadResult.url);
+    const suggestedSearch = analysis.suggestedSearch || "fashion item";
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    const base64 = `data:${file.type};base64,${buffer.toString("base64")}`
+    // Scrape Myntra using suggestedSearch
+    const products = await scrapeMyntra(suggestedSearch);
 
-    const uploadResult = await uploadImage(base64, "user-uploads")
-
-    const client = await clientPromise
-    const db = client.db("fashion_search")
-    const uploads = db.collection("uploads")
-
-    const uploadRecord = {
+    // Save upload record in MongoDB via Mongoose
+    await connectDB();
+    const newUpload = await Upload.create({
       userId: decoded.userId,
       originalName: file.name,
       cloudinaryUrl: uploadResult.url,
       cloudinaryPublicId: uploadResult.publicId,
       fileSize: file.size,
       uploadedAt: new Date(),
-    }
-
-    const result = await uploads.insertOne(uploadRecord)
-
-    // Simulate AI processing delay
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    const resultIndex = file.name.length % mockAnalysisResults.length
-    const randomResult = mockAnalysisResults[resultIndex]
-
-    // Generate price comparison for the analyzed product
-    const mockRetailers = [
-      { name: "Amazon", logo: "/amazon-logo.png" },
-      { name: "Nordstrom", logo: "/nordstrom-logo.png" },
-      { name: "Target", logo: "/generic-red-bullseye.png" },
-      { name: "Macy's", logo: "/macys-logo.png" },
-    ]
-
-    const priceComparisons = mockRetailers.map((retailer, index) => ({
-      retailer: retailer.name,
-      logo: retailer.logo,
-      price: Number.parseFloat((randomResult.estimatedPrice * (0.9 + (index % 3) * 0.1)).toFixed(2)),
-      inStock: index !== 1, // Make one retailer out of stock deterministically
-      rating: Number.parseFloat((3.5 + (index % 4) * 0.4).toFixed(1)),
-      reviews: 50 + index * 75,
-    }))
+      analysis: { suggestedSearch },
+    });
 
     return NextResponse.json({
       success: true,
@@ -111,16 +91,16 @@ export async function POST(request) {
         publicId: uploadResult.publicId,
       },
       analysis: {
-        ...randomResult,
-        uploadId: result.insertedId,
-        uploadedAt: new Date().toISOString(),
+        suggestedSearch,
+        uploadId: newUpload._id,
+        uploadedAt: newUpload.uploadedAt.toISOString(),
         fileSize: file.size,
         fileName: file.name,
       },
-      priceComparisons: priceComparisons.sort((a, b) => a.price - b.price),
-    })
+      products,
+    });
   } catch (error) {
-    console.error("Upload analysis error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Upload analysis error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
