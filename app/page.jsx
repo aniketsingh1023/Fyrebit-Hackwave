@@ -6,6 +6,7 @@ import { Upload, Search, DollarSign, ArrowRight, Heart } from "lucide-react"
 import Link from "next/link"
 import { CardSwiperClient } from "@/components/card-swiper-client"
 
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#F5F1E8" }}>
@@ -18,7 +19,7 @@ export default function LandingPage() {
             <h1 className="text-3xl font-serif font-bold text-white tracking-wide">Wearly</h1>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="#how-it-works" className="text-gray-300 hover:text-white transition-colors font-medium">
+            <Link href="/how-it-works" className="text-gray-300 hover:text-white transition-colors font-medium">
               How It Works
             </Link>
             <Link href="/about-team" className="text-gray-300 hover:text-white transition-colors font-medium">
@@ -80,11 +81,13 @@ export default function LandingPage() {
 
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-serif font-bold text-black mb-6 italic">Why Choose Wearly?</h2>
+            <div className="text-5xl md:text-6xl font-Jersey10 font-bold text-black mb-6 ">Why Choose Wearly?</div>
             <p className="text-2xl text-gray-700 max-w-3xl mx-auto font-light">
               Discover the power of AI-driven fashion search
             </p>
           </div>
+
+
 
           <div className="flex justify-center">
             <div className="w-full max-w-3xl">
@@ -146,7 +149,7 @@ export default function LandingPage() {
                     </p>
                   </div>
                 </Card>
-              </CardSwiperClient>
+              </CardSwiperClient>         
             </div>
           </div>
         </div>
