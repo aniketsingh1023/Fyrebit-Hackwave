@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
 import { uploadImage } from "@/lib/cloudinary"
 import { GoogleGenerativeAI } from "@google/generative-ai"
-import Upload from "@/models/Upload.js"
+import Upload from "../../../models/Upload"
+
 import { connectDB } from "@/lib/mongodb"
 import mongoose from "mongoose"
 import { scrapeMyntraProducts } from "@/lib/myntra-scraper"
