@@ -251,7 +251,7 @@ export default function LandingPage() {
             <div className="aspect-video bg-white flex items-center justify-center">
               <iframe
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/9Ftc719VHuE"
+                src="https://www.youtube.com/embed/y37nkZkaCW8"
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -284,3 +284,4 @@ export default function LandingPage() {
     </div>
   )
 }
+

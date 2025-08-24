@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@import url('https://fonts.cdnfonts.com/css/mistrully');
 
 :root {
   --background: #ffffff;
@@ -130,3 +131,14 @@
     @apply bg-background text-foreground;
   }
 }
+@font-face {
+  font-family: "Mistrully";
+  src: url("/fonts/Mistrully.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-mistrully {
+  font-family: "Mistrully", cursive;
+}
+
