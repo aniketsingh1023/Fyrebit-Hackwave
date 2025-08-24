@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { uploadImage } from "@/lib/cloudinary"
 import { GoogleGenerativeAI } from "@google/generative-ai"
-import Upload from '@/models/Upload' // using alias
+import Upload from "@/models/Upload"
 
 
 import { connectDB } from "@/lib/mongodb"
