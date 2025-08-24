@@ -18,6 +18,7 @@ export default function Navigation() {
     { id: "profile", icon: User, label: "Profile", href: "/profile" },
   ];
 
+  
   useEffect(() => {
     const currentPath = pathname;
     const activeItem = sidebarItems.find((item) => item.href === currentPath);
