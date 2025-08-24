@@ -92,7 +92,7 @@ export default function LandingPage() {
                 <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
                   <div className="text-center">
                     <img
-                      src="/"
+                      src="image.png"
                       alt="AI Fashion Recognition"
                       className="w-full h-72 object-cover rounded-xl mb-6"
                     />
@@ -112,7 +112,7 @@ export default function LandingPage() {
                 <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
                   <div className="text-center">
                     <img
-                      src="/dynamic-price-comparison-dashboard-with-multiple-r.png"
+                      src="img2.png"
                       alt="Price Comparison"
                       className="w-full h-72 object-cover rounded-xl mb-6"
                     />
@@ -131,7 +131,7 @@ export default function LandingPage() {
                 <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
                   <div className="text-center">
                     <img
-                      src="/happy-shoppers-saving-money-with-fashion-deals-and.png"
+                      src="img5.jpg"
                       alt="Save Money"
                       className="w-full h-72 object-cover rounded-xl mb-6"
                     />
