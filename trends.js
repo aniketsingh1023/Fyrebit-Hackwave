@@ -309,5 +309,146 @@
       "link": "https://www.ajio.com/buda-jeans-co-men-flat-front-slim-fit-trousers/p/701803429_black?",
       "source": "Ajio"
     }
+  ],
+  "off-white linen shirt with pockets": [
+    {
+      "name": "NETPLAY",
+      "originalPrice": "₹1299",
+      "discountedPrice": "₹390",
+      "price": "₹390",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20221017/3e1P/634d6ab9f997ddfdbd2daeeb/netplay_off_white_men_micro_print_slim_fit_shirt_with_patch_pocket.jpg",
+      "link": "https://www.ajio.com/netplay-men-micro-print-slim-fit-shirt-with-patch-pocket/p/441147050_offwhite?",
+      "source": "Ajio"
+    },
+    {
+      "name": "ECKO UNLTD",
+      "originalPrice": "₹1999",
+      "discountedPrice": "₹600",
+      "price": "₹600",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20221230/oRTV/63ae8678f997ddfdbd036154/ecko_unltd_off_white_slim_fit_shirt_with_flap_pockets.jpg",
+      "link": "https://www.ajio.com/ecko-unltd-slim-fit-shirt-with-flap-pockets/p/443003507_white?",
+      "source": "Ajio"
+    },
+    {
+      "name": "Roadster Regular Fit Casual Shirt",
+      "originalPrice": "₹1699",
+      "discountedPrice": "₹611",
+      "price": "₹611",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/32215255/2025/2/24/82095465-bda3-4bc5-a994-493a3ed371f81740382045052-Men-Cotton-Linen-Regular-Fit-Solid-Shirt-4561740382044350-1.jpg",
+      "link": "https://www.myntra.com/shirts/roadster/the-roadster-life-co-regular-fit-cotton-linen-casual-shirt/32215255/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "Bene Kleed Men Slim Fit Casual Shirt",
+      "originalPrice": "₹2099",
+      "discountedPrice": "₹986",
+      "price": "₹986",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/7189947/2018/8/30/b0a17130-00b2-47dd-9acf-75fcdf7333111535614137835-Bene-Kleed-Men-Off-White--Blue-Slim-Fit-Printed-Casual-Shirt-3181535614137565-1.jpg",
+      "link": "https://www.myntra.com/shirts/bene+kleed/bene-kleed-men-off-white--blue-slim-fit-printed-casual-shirt/7189947/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "Gap Kids",
+      "originalPrice": "₹1799",
+      "discountedPrice": "₹1079",
+      "price": "₹1079",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20250110/ueZ5/678127eb0431850e0d91e956/gap_kids_off_white_boys_relaxed_fit_shirt_with_patch_pocket.jpg",
+      "link": "https://www.ajio.com/gap-kids-boys-relaxed-fit-shirt-with-patch-pocket/p/442711477_offwhite?",
+      "source": "Ajio"
+    }
+  ],
+  "basic t-shirts": [
+    {
+      "name": "Outryt by AZORTE",
+      "originalPrice": "₹599",
+      "discountedPrice": "₹240",
+      "price": "₹240",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20240808/h7LC/66b4efc31d763220fa6aff17/outryt_by_azorte_white_fitted_basic_t-shirt.jpg",
+      "link": "https://www.ajio.com/outryt-by-azorte-fitted-basic-t-shirt/p/443047675_white?",
+      "source": "Ajio"
+    },
+    {
+      "name": "Basics By Tokyo Talkies Women Solid Round Neck T-shirt",
+      "originalPrice": "₹899",
+      "discountedPrice": "₹269",
+      "price": "₹269",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/2025/JUNE/20/nsIcKtDe_7c554c3975e14139a78b01f5b9bd8599.jpg",
+      "link": "https://www.myntra.com/tshirts/basics+by+tokyo+talkies/basics-by-tokyo-talkies-women-solid-round-neck-t-shirt/35070514/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "Basics By Tokyo Talkies High Neck Polyester T-shirt",
+      "originalPrice": "₹899",
+      "discountedPrice": "₹269",
+      "price": "₹269",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/2025/JUNE/20/pIQRUf1c_3a9f0224a9b1419caed944c6f373494b.jpg",
+      "link": "https://www.myntra.com/tshirts/basics+by+tokyo+talkies/basics-by-tokyo-talkies-high-neck-sleeveless-rip-polyester-t-shirt/35070680/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "Outryt by AZORTE",
+      "originalPrice": "₹699",
+      "discountedPrice": "₹280",
+      "price": "₹280",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20241009/Djer/67064d9af9b8ef490ba5c175/outryt_by_azorte_black_basic_t-shirt.jpg",
+      "link": "https://www.ajio.com/outryt-by-azorte-basic-t-shirt/p/443047332_black?",
+      "source": "Ajio"
+    },
+    {
+      "name": "Outryt by AZORTE",
+      "originalPrice": "₹699",
+      "discountedPrice": "₹280",
+      "price": "₹280",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20241009/54Xq/67064e90f9b8ef490ba5c5a3/outryt_by_azorte_white_basic_t-shirt.jpg",
+      "link": "https://www.ajio.com/outryt-by-azorte-basic-t-shirt/p/443047332_white?",
+      "source": "Ajio"
+    }
+  ],
+  "Men's blue and white wave print half sleeves mandarin collar shirt": [
+    {
+      "name": "ISUEL FAB Men Multi Striped Casual Shirt",
+      "originalPrice": "₹999",
+      "discountedPrice": "₹699",
+      "price": "₹699",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/2025/JULY/18/siT9GUEJ_787daa4d2e3d446bbf6c0f59823ae46a.jpg",
+      "link": "https://www.myntra.com/shirts/isuel+fab/isuel-fab-men-multi-striped-casual-shirt/35827343/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "Turtle Printed Cotton Casual Shirt",
+      "originalPrice": "₹1699",
+      "discountedPrice": "₹849",
+      "price": "₹849",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/24278858/2025/7/24/fe4c9743-a2ca-4d65-8982-83b1a345d9081753367030125-Turtle-Printed-Cotton-Casual-Shirt-1421753367029527-1.jpg",
+      "link": "https://www.myntra.com/shirts/turtle/turtle-printed-cotton-casual-shirt/24278858/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "FRENCH CROWN",
+      "originalPrice": "₹2987",
+      "discountedPrice": "₹1195",
+      "price": "₹1195",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20241130/yDrl/674b2545c148fa1b30ff5c69/french_crown_cream_men_shirt_with_cuban_collar.jpg",
+      "link": "https://www.ajio.com/french-crown-men-shirt-with-cuban-collar/p/700833675_cream?",
+      "source": "Ajio"
+    },
+    {
+      "name": "ENSPYR Men Solid Casual Cotton Shirt",
+      "originalPrice": "₹1599",
+      "discountedPrice": "₹1329",
+      "price": "₹1329",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/2024/DECEMBER/7/t7oVjRtG_a23e37a8eddd489bae82ee405bff64ab.jpg",
+      "link": "https://www.myntra.com/shirts/enspyr/enspyr-men-mandarin-collar-solid-cotton-casual-shirt/31872754/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "COVE AND LANE Cotton Linen Relaxed Shirt",
+      "originalPrice": "₹2250",
+      "discountedPrice": "₹1395",
+      "price": "₹1395",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/2025/JULY/18/PiRhJa9P_4552a1f4b4164e37a3e8645fcdcdc1ae.jpg",
+      "link": "https://www.myntra.com/shirts/cove+and+lane/cove-and-lane-kensignton-relaxed-cotton-linen-casual-shirt/35779569/buy",
+      "source": "Myntra"
+    }
   ]
 }
