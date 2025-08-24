@@ -1,7 +1,10 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { Upload, Search, DollarSign, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { CardSwiperClient } from "@/components/card-swiper-client"
 
 export default function LandingPage() {
   return (
@@ -55,60 +58,86 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-16 px-4 bg-muted/30">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">How FashionFind Works</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Three simple steps to find the best fashion deals
-            </p>
-          </div>
+<section id="features" className="py-16 px-4 relative bg-amber-50">
+  <div className="absolute inset-0 opacity-10">
+    <div
+      className="h-full w-full"
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(0,0,0,0.8) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,0,0,0.8) 1px, transparent 1px)
+        `,
+        backgroundSize: "40px 40px",
+      }}
+    ></div>
+  </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="text-center border-border/50 hover:shadow-lg transition-shadow">
-              <CardContent className="pt-8 pb-6">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Upload className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-serif font-bold text-foreground mb-3">Upload Image</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Simply upload a photo of any fashion item you want to find or compare prices for.
-                </p>
-              </CardContent>
-            </Card>
+  <div className="container mx-auto max-w-6xl relative z-10">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl md:text-4xl font-serif font-bold text-black mb-4">
+        Why Choose FashionFind?
+      </h2>
+      <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+        Discover the power of AI-driven fashion search
+      </p>
+    </div>
 
-            <Card className="text-center border-border/50 hover:shadow-lg transition-shadow">
-              <CardContent className="pt-8 pb-6">
-                <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-8 h-8 text-secondary" />
+    <div className="flex justify-center">
+      <div className="w-full max-w-2xl">
+        {/* Manual Swipe Only */}
+        <CardSwiperClient className="space-y-6" cardsToShow={1} loop={false} autoplay={false}>
+          {[ 
+            {
+              src: "/modern-fashion-ai-technology-interface-with-sleek-.png",
+              icon: <Search className="w-5 h-5 text-primary" />,
+              title: "Smart Image Recognition",
+              text: "Advanced AI technology identifies fashion items from any photo with high accuracy.",
+              bg: "bg-primary/10",
+            },
+            {
+              src: "/dynamic-price-comparison-dashboard-with-multiple-r.png",
+              icon: <DollarSign className="w-5 h-5 text-secondary" />,
+              title: "Real-Time Price Comparison",
+              text: "Compare prices across dozens of popular fashion retailers in real-time.",
+              bg: "bg-secondary/10",
+            },
+            {
+              src: "/happy-shoppers-saving-money-with-fashion-deals-and.png",
+              icon: <Upload className="w-5 h-5 text-accent" />,
+              title: "Save Money & Time",
+              text: "Find the best deals without manually searching multiple websites.",
+              bg: "bg-accent/10",
+            },
+          ].map((card, idx) => (
+            <Card key={idx} className="p-6 border border-gray-200 rounded-lg bg-white shadow-lg">
+              <div className="text-center">
+                <img
+                  src={card.src}
+                  alt={card.title}
+                  className="w-full h-64 object-cover rounded-lg mb-4"
+                />
+                <div className="flex items-center justify-center space-x-2 mb-2">
+                  <div className={`w-8 h-8 ${card.bg} rounded-lg flex items-center justify-center`}>
+                    {card.icon}
+                  </div>
+                  <h3 className="font-serif font-bold text-black text-lg">{card.title}</h3>
                 </div>
-                <h3 className="text-xl font-serif font-bold text-foreground mb-3">AI Analysis</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Our AI identifies the item and searches across multiple fashion retailers automatically.
-                </p>
-              </CardContent>
+                <p className="text-gray-600">{card.text}</p>
+              </div>
             </Card>
+          ))}
+        </CardSwiperClient>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <Card className="text-center border-border/50 hover:shadow-lg transition-shadow">
-              <CardContent className="pt-8 pb-6">
-                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <DollarSign className="w-8 h-8 text-accent" />
-                </div>
-                <h3 className="text-xl font-serif font-bold text-foreground mb-3">Best Prices</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Get instant price comparisons and find the best deals from trusted retailers.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">Why Choose FashionFind?</h2>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">How It Works</h2>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -119,9 +148,9 @@ export default function LandingPage() {
                     <span className="text-primary-foreground font-bold text-sm">1</span>
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-foreground mb-2">Smart Image Recognition</h3>
+                    <h3 className="font-serif font-bold text-foreground mb-2">Upload Image</h3>
                     <p className="text-muted-foreground">
-                      Advanced AI technology identifies fashion items from any photo with high accuracy.
+                      Simply upload a photo of any fashion item you want to find or compare prices for.
                     </p>
                   </div>
                 </div>
@@ -131,9 +160,9 @@ export default function LandingPage() {
                     <span className="text-secondary-foreground font-bold text-sm">2</span>
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-foreground mb-2">Real-Time Price Comparison</h3>
+                    <h3 className="font-serif font-bold text-foreground mb-2">AI Analysis</h3>
                     <p className="text-muted-foreground">
-                      Compare prices across dozens of popular fashion retailers in real-time.
+                      Our AI identifies the item and searches across multiple fashion retailers automatically.
                     </p>
                   </div>
                 </div>
@@ -143,9 +172,9 @@ export default function LandingPage() {
                     <span className="text-accent-foreground font-bold text-sm">3</span>
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-foreground mb-2">Save Money & Time</h3>
+                    <h3 className="font-serif font-bold text-foreground mb-2">Best Prices</h3>
                     <p className="text-muted-foreground">
-                      Find the best deals without manually searching multiple websites.
+                      Get instant price comparisons and find the best deals from trusted retailers.
                     </p>
                   </div>
                 </div>
