@@ -497,5 +497,52 @@
       "link": "https://www.ajio.com/walrus-men-padded-messenger-bag/p/700138877_brown?",
       "source": "Ajio"
     }
+  ],
+  "off-white solid casual shirt men's long sleeve": [
+    {
+      "name": "Roadster Solid Casual Shirt",
+      "originalPrice": "₹1699",
+      "discountedPrice": "₹645",
+      "price": "₹645",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/32215259/2025/2/24/24aaf86d-5e29-48ac-b7a8-2c9d4aa896951740382064009-Men-Cotton-Linen-Regular-Fit-Solid-Shirt-4851740382063343-1.jpg",
+      "link": "https://www.myntra.com/shirts/roadster/the-roadster-lifestyle-co-solid-casual-shirt/32215259/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "RED TAPE",
+      "originalPrice": "₹5499",
+      "discountedPrice": "₹770",
+      "price": "₹770",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20250114/VA1M/678592ac0431850e0d9aafba/red_tape_off-white_men_shirt_with_band_collar.jpg",
+      "link": "https://www.ajio.com/red-tape-men-shirt-with-band-collar-/p/701052377_offwhite?",
+      "source": "Ajio"
+    },
+    {
+      "name": "Mast & Harbour Pure Cotton Casual Shirt",
+      "originalPrice": "₹2599",
+      "discountedPrice": "₹779",
+      "price": "₹779",
+      "image": "https://assets.myntassets.com/dpr_2,q_60,w_210,c_limit,fl_progressive/assets/images/27478580/2024/5/2/00f67fbc-1c8f-484c-a9ec-cf42937bbab71714641800714-Mens-Cotton-Full-Sleeve-Shirts-5001714641800168-1.jpg",
+      "link": "https://www.myntra.com/shirts/mast+%26+harbour/mast--harbour-men-oversized-pure-cotton-casual-shirt/27478580/buy",
+      "source": "Myntra"
+    },
+    {
+      "name": "U.S. Polo Assn.",
+      "originalPrice": "₹1999",
+      "discountedPrice": "₹980",
+      "price": "₹980",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root/20230906/OFpC/64f8cd96afa4cf41f5c8bcdd/u.s._polo_assn._off-white_tailored_fit_cotton_shirt.jpg",
+      "link": "https://www.ajio.com/u-s-polo-assn-tailored-fit-cotton-shirt/p/469536371_offwhite?",
+      "source": "Ajio"
+    },
+    {
+      "name": "U.S. Polo Assn.",
+      "originalPrice": "₹2299",
+      "discountedPrice": "₹1127",
+      "price": "₹1127",
+      "image": "https://assets-jiocdn.ajio.com/medias/sys_master/root1/20250723/qnha/6880d90e3d468c61ab195ccf/u.s._polo_assn._off-white_men_regular_fit_shirt_with_logo_print.jpg",
+      "link": "https://www.ajio.com/u-s-polo-assn-men-regular-fit-shirt-with-logo-print/p/469757422_offwhite?",
+      "source": "Ajio"
+    }
   ]
 }

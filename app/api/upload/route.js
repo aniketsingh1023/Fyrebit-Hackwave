@@ -7,6 +7,7 @@ import { connectDB } from "@/lib/mongodb"
 import mongoose from "mongoose"
 import { scrapeAllFashionSites } from "@/lib/myntra-scraper"  // use master scraper instead of only Myntra
 
+
 const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null
 
 async function analyzeImageWithGemini(imageUrl, mimeType = "image/jpeg") {
