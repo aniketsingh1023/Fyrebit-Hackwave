@@ -20,6 +20,12 @@ export default function LandingPage() {
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center space-x-6">
               <Link
+                href="/Subscription"
+                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+              >
+                Subscription
+              </Link>
+              <Link
                 href="/how-it-works"
                 className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
               >

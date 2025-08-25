@@ -481,8 +481,11 @@ export default function PostsPage() {
 
           <div className="flex items-center justify-between mb-12">
             <div className="text-center flex-1">
-              <h1 className="text-5xl font-light mb-3 text-stone-200 tracking-wider">
-                POSTS
+              {/* <h1 className="text-5xl font-minecraft mb-3 text-stone-200 tracking-wider">
+                MOODBOARD
+              </h1> */}
+              <h1 className="text-7xl mb-6 text-stone-100 tracking-wide font-minecraft">
+                MOODBOARD
               </h1>
               <div className="w-24 h-px bg-stone-500 mx-auto mb-4"></div>
               <p className="text-stone-400 text-sm font-light tracking-wide uppercase">
@@ -749,6 +752,7 @@ export default function PostsPage() {
                     className="bg-stone-100 border border-stone-200 overflow-hidden hover:border-stone-300 transition-all duration-500 hover:shadow-lg hover:shadow-stone-900/20 cursor-pointer"
                     onClick={() => openPostDetails(post)}
                   >
+                  
                     <CardContent className="p-0">
                       {/* Media Display - Full Width at Top */}
                       {post.media && post.media.length > 0 && (
