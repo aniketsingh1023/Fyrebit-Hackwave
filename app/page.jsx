@@ -1,128 +1,248 @@
-"use client";
+"use client"
 
-import React from "react";
-import { motion } from "framer-motion";
-import { DollarSign, Bell, Server, BarChart3, ArrowRight } from "lucide-react";
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { Upload, Search, DollarSign, Heart, Menu, X } from "lucide-react"
+import Link from "next/link"
+import { CardSwiperClient } from "@/components/card-swiper-client"
 
-// /subscription page — Pricing & Revenue Strategy (₹)
-// Theme: Red & White only
+export default function LandingPage() {
+  const [isOpen, setIsOpen] = useState(false)
 
-export default function SubscriptionPage() {
+
   return (
-    <main className="min-h-screen bg-red-950 text-white">
-      {/* Header */}
-      <section className="max-w-6xl mx-auto px-6 pt-16 pb-10 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col gap-6"
-        >
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-            Affordable <span className="text-red-300">Subscriptions</span>
-          </h1>
-          <p className="text-red-100/90 max-w-3xl mx-auto">
-            Choose a plan priced in <span className="font-bold">INR</span> to fit your growth stage. Start small, grow big.
+    <div className="min-h-screen" style={{ backgroundColor: "#F5F1E8" }}>
+      {/* Floating Rounded Navbar (Top-Right) */}
+      <header className="fixed top-4 right-4 z-50">
+        <div className="bg-black border border-gray-800 rounded-2xl shadow-lg px-4 py-2">
+          <div className="flex items-center justify-between space-x-4">
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center space-x-6">
+              <Link
+                href="/subscription"
+                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+              >
+                Subscription
+              </Link>
+              <Link
+                href="/how-it-works"
+                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+              >
+                How It Works
+              </Link>
+              <Link
+                href="/about-team"
+                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+              >
+                About the Team
+              </Link>
+              <Button
+                size="sm"
+                className="bg-amber-100 text-black hover:bg-amber-200 font-semibold px-4 py-1"
+                asChild
+              >
+                <Link href="/login">Get Started</Link>
+              </Button>
+            </nav>
+
+            {/* Mobile Hamburger */}
+            <button
+              onClick={() => setIsOpen(true)}
+              className="md:hidden text-white focus:outline-none"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Sidebar */}
+        {isOpen && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex">
+            <div className="bg-black w-72 h-full shadow-2xl p-6 rounded-r-2xl relative">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="absolute top-4 right-4 text-white"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <nav className="mt-12 flex flex-col space-y-6">
+                <Link
+                  href="/how-it-works"
+                  className="text-gray-300 hover:text-white transition-colors font-medium"
+                  onClick={() => setIsOpen(false)}
+                >
+                  How It Works
+                </Link>
+                <Link
+                  href="/about-team"
+                  className="text-gray-300 hover:text-white transition-colors font-medium"
+                  onClick={() => setIsOpen(false)}
+                >
+                  About the Team
+                </Link>
+                <Button
+                  className="bg-amber-100 text-black hover:bg-amber-200 font-semibold px-6"
+                  asChild
+                >
+                  <Link href="/login" onClick={() => setIsOpen(false)}>
+                    Get Started
+                  </Link>
+                </Button>
+              </nav>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Hero Section (Full Screen, Touching Top) */}
+      <section
+        className="relative w-full h-[100vh] bg-cover bg-center bg-[url('/hero2.png')] md:bg-[url('/hero-section.png')]"
+      >
+        <div className="absolute inset-0 bg-black/30"></div>
+      </section>
+
+      {/* Features Section */}
+<section
+  id="features"
+  className="py-20 px-4 relative bg-cover bg-center"
+  style={{ backgroundImage: "url('/paper.jpg')" }}
+>
+  {/* Optional dark overlay for readability */}
+  <div className="absolute inset-0 bg-black/50"></div>
+
+  <div className="container mx-auto max-w-6xl relative z-10">
+    <div className="text-center mb-16">
+      <h2 className="text-5xl md:text-6xl font-Jersey10 font-bold text-white mb-6">
+        Why Choose Wearly?
+      </h2>
+      <p className="text-2xl text-gray-200 max-w-3xl mx-auto font-light">
+        Discover the power of AI-driven fashion search
+      </p>
+    </div>
+
+    <div className="flex justify-center">
+      <div className="w-full max-w-3xl">
+        <CardSwiperClient className="space-y-6" cardsToShow={1} loop={true}>
+          <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
+            <div className="text-center">
+              <img
+                src="image.png"
+                alt="AI Fashion Recognition"
+                className="w-full h-72 object-cover rounded-xl mb-6"
+              />
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                  <Search className="w-7 h-7 text-black" />
+                </div>
+                <h3 className="font-serif font-bold text-black text-2xl">
+                  Smart Image Recognition
+                </h3>
+              </div>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                Advanced AI technology identifies fashion items from any photo
+                with incredible accuracy and style understanding.
+              </p>
+            </div>
+          </Card>
+
+          <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
+            <div className="text-center">
+              <img
+                src="img2.png"
+                alt="Price Comparison"
+                className="w-full h-72 object-cover rounded-xl mb-6"
+              />
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                  <DollarSign className="w-7 h-7 text-black" />
+                </div>
+                <h3 className="font-serif font-bold text-black text-2xl">
+                  Real-Time Price Comparison
+                </h3>
+              </div>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                Compare prices across dozens of popular fashion retailers
+                in real-time to find the perfect deal.
+              </p>
+            </div>
+          </Card>
+
+          <Card className="p-8 border-2 border-black rounded-2xl bg-white shadow-2xl">
+            <div className="text-center">
+              <img
+                src="img5.jpg"
+                alt="Save Money"
+                className="w-full h-72 object-cover rounded-xl mb-6"
+              />
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                  <Upload className="w-7 h-7 text-black" />
+                </div>
+                <h3 className="font-serif font-bold text-black text-2xl">
+                  Save Money & Time
+                </h3>
+              </div>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                Find the best deals without manually searching multiple
+                websites or stores.
+              </p>
+            </div>
+          </Card>
+        </CardSwiperClient>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      {/* WalkThrough Section */}
+      <section
+        className="py-16 px-4 sm:py-20 sm:px-6 bg-cover bg-center"
+        style={{ backgroundImage: "url('/yt.png')" }}
+      >
+        <div className="container mx-auto max-w-5xl relative">
+          
+
+          <div
+            className="relative mx-auto rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-white"
+            style={{ maxWidth: "800px" }}
+          >
+            <div className="aspect-video bg-black flex items-center justify-center">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/y37nkZkaCW8"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 px-4 bg-black">
+        <div className="container mx-auto text-center">
+          <div className="flex items-center justify-center space-x-3 mb-6">
+            <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+              <Search className="w-5 h-5 text-black" />
+            </div>
+            <span className="font-serif font-bold text-white text-2xl">Wearly</span>
+          </div>
+          <p className="text-gray-400 mb-4 text-lg">
+            © 2024 Wearly. All rights reserved. Find the best fashion deals instantly.
           </p>
-        </motion.div>
-      </section>
-
-      {/* Pricing Tiers */}
-      <section className="max-w-6xl mx-auto px-6 pb-16">
-        <div className="grid md:grid-cols-3 gap-6">
-          <PriceCard name="Starter" price="₹199/mo" cta="Start Trial">
-            <ul className="space-y-2 list-disc list-inside text-red-100/90">
-              <li>Up to 3 sources • 1 workspace</li>
-              <li>50 scraped pages/day</li>
-              <li>Basic trend briefs + 20 AI posts/mo</li>
-            </ul>
-          </PriceCard>
-          <PriceCard featured name="Pro" price="₹499/mo" cta="Upgrade">
-            <ul className="space-y-2 list-disc list-inside text-red-500/90">
-              <li>20 sources • 3 workspaces</li>
-              <li>1,000 scraped pages/day + priority queue</li>
-              <li>Advanced briefs + 200 AI posts/mo + scheduler</li>
-            </ul>
-          </PriceCard>
-          <PriceCard name="Scale" price="₹1299/mo" cta="Talk to Sales">
-            <ul className="space-y-2 list-disc list-inside text-red-100/90">
-              <li>Unlimited sources • 10 workspaces</li>
-              <li>5,000 scraped pages/day</li>
-              <li>Custom templates, SLAs, success manager</li>
-            </ul>
-          </PriceCard>
+          <div className="flex items-center justify-center space-x-2 text-amber-100">
+            <span className="text-lg">Made with</span>
+            <Heart className="w-5 h-5 fill-current" />
+            <span className="text-lg">by team</span>
+            <span className="font-bold text-xl">fyrebit</span>
+          </div>
         </div>
-
-        {/* Extra Revenue Features */}
-        <div className="mt-10 grid md:grid-cols-3 gap-6">
-          <Card title="Notifications" icon={<Bell className="h-5 w-5" />}>
-            <p className="text-red-100/90">
-              Premium users get <span className="font-semibold">real-time notifications</span> when trends match their preferences.
-            </p>
-          </Card>
-          <Card title="API Access" icon={<Server className="h-5 w-5" />}>
-            <p className="text-red-100/90">
-              Provide an <span className="font-semibold">API endpoint</span> so developers and agencies can directly integrate our trend data.
-            </p>
-          </Card>
-          <Card title="Brand Analytics" icon={<BarChart3 className="h-5 w-5" />}>
-            <p className="text-red-100/90">
-              Build an <span className="font-semibold">admin panel</span> for fashion brands to analyze what’s trending, helping them stay ahead.
-            </p>
-          </Card>
-        </div>
-
-        {/* CTA */}
-        <div className="mt-12 flex flex-col items-center gap-4">
-          <a href="#" className="inline-flex items-center gap-2 rounded-2xl bg-white text-red-900 px-6 py-4 font-semibold shadow hover:shadow-lg transition">
-            Get Early Access <ArrowRight className="h-4 w-4" />
-          </a>
-          <span className="text-red-200 text-sm">Questions? DM us for a pilot slot.</span>
-        </div>
-      </section>
-    </main>
-  );
+      </footer>
+    </div>
+  )
 }
 
-function Card({ title, icon, children }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-      className="rounded-2xl border border-red-800/60 bg-red-900/40 p-5 shadow-sm hover:shadow-md"
-    >
-      <div className="flex items-center gap-2 mb-3">
-        {icon && <div className="text-red-300">{icon}</div>}
-        <h3 className="text-lg font-semibold">{title}</h3>
-      </div>
-      <div>{children}</div>
-    </motion.div>
-  );
-}
-
-function PriceCard({ name, price, cta, children, featured }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0.5, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className={`rounded-2xl p-6 border shadow-sm hover:shadow-md ${
-        featured ? "bg-white text-red-900 border-red-200" : "bg-red-900/40 border-red-800/60"
-      }`}
-    >
-      <div className="flex items-baseline justify-between">
-        <h3 className={`text-xl font-bold ${featured ? "text-red-900" : "text-white"}`}>{name}</h3>
-        <span className={`text-3xl font-extrabold ${featured ? "text-red-700" : "text-red-300"}`}>{price}</span>
-      </div>
-      <div className={`mt-4 ${featured ? "text-red-800" : "text-red-100/90"}`}>{children}</div>
-      <button className={`mt-5 w-full rounded-2xl px-4 py-3 font-semibold transition flex items-center justify-center gap-2 ${
-        featured ? "bg-red-900 text-white hover:opacity-90" : "bg-white text-red-900 hover:opacity-90"
-      }`}>
-        {cta} <ArrowRight className="h-4 w-4" />
-      </button>
-    </motion.div>
-  );
-}
- 

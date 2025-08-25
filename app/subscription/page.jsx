@@ -2,9 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { DollarSign, ArrowRight } from "lucide-react";
+import { DollarSign, Bell, Server, BarChart3, ArrowRight } from "lucide-react";
 
-// /subscription page — Pricing & Early Revenue Strategy
+// /subscription page — Pricing & Revenue Strategy (₹)
 // Theme: Red & White only
 
 export default function SubscriptionPage() {
@@ -19,10 +19,10 @@ export default function SubscriptionPage() {
           className="flex flex-col gap-6"
         >
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-            Choose Your <span className="text-red-300">Subscription</span>
+            Affordable <span className="text-red-300">Subscriptions</span>
           </h1>
           <p className="text-red-100/90 max-w-3xl mx-auto">
-            Unlock trend discovery, Gen‑Z style post generation, and automated publishing. Pick a plan that fits your growth stage and start monetizing attention today.
+            Choose a plan priced in <span className="font-bold">INR</span> to fit your growth stage. Start small, grow big.
           </p>
         </motion.div>
       </section>
@@ -30,21 +30,21 @@ export default function SubscriptionPage() {
       {/* Pricing Tiers */}
       <section className="max-w-6xl mx-auto px-6 pb-16">
         <div className="grid md:grid-cols-3 gap-6">
-          <PriceCard name="Starter" price="$49/mo" cta="Start Trial">
+          <PriceCard name="Starter" price="₹199/mo" cta="Start Trial">
             <ul className="space-y-2 list-disc list-inside text-red-100/90">
               <li>Up to 3 sources • 1 workspace</li>
               <li>50 scraped pages/day</li>
               <li>Basic trend briefs + 20 AI posts/mo</li>
             </ul>
           </PriceCard>
-          <PriceCard featured name="Pro" price="$149/mo" cta="Upgrade">
-            <ul className="space-y-2 list-disc list-inside text-red-100/90">
+          <PriceCard featured name="Pro" price="₹499/mo" cta="Upgrade">
+            <ul className="space-y-2 list-disc list-inside text-red-00/90">
               <li>20 sources • 3 workspaces</li>
               <li>1,000 scraped pages/day + priority queue</li>
               <li>Advanced briefs + 200 AI posts/mo + scheduler</li>
             </ul>
           </PriceCard>
-          <PriceCard name="Scale" price="$399/mo" cta="Talk to Sales">
+          <PriceCard name="Scale" price="₹1299/mo" cta="Talk to Sales">
             <ul className="space-y-2 list-disc list-inside text-red-100/90">
               <li>Unlimited sources • 10 workspaces</li>
               <li>5,000 scraped pages/day</li>
@@ -53,24 +53,22 @@ export default function SubscriptionPage() {
           </PriceCard>
         </div>
 
-        {/* Add‑Ons and Notes */}
+        {/* Extra Revenue Features */}
         <div className="mt-10 grid md:grid-cols-3 gap-6">
-          <Card title="Usage‑Based Overage">
-            <p className="text-red-100/90">Over cap: <span className="font-semibold">$0.90 / 1k pages</span> scraped + <span className="font-semibold">$5 / 100 AI posts</span>.</p>
+          <Card title="Notifications" icon={<Bell className="h-5 w-5" />}>
+            <p className="text-red-100/90">
+              Premium users get <span className="font-semibold">real-time notifications</span> when trends match their preferences.
+            </p>
           </Card>
-          <Card title="Add‑Ons">
-            <ul className="space-y-2 list-disc list-inside text-red-100/90">
-              <li>Managed scraping pipelines: from <span className="font-semibold">$500/mo</span></li>
-              <li>Custom trend reports: <span className="font-semibold">$299/report</span></li>
-              <li>Dedicated IPs/rotations: <span className="font-semibold">$99/mo</span></li>
-            </ul>
+          <Card title="API Access" icon={<Server className="h-5 w-5" />}>
+            <p className="text-red-100/90">
+              Provide an <span className="font-semibold">API endpoint</span> so developers and agencies can directly integrate our trend data.
+            </p>
           </Card>
-          <Card title="Fast Cash Moves (Week 1–4)">
-            <ul className="space-y-2 list-disc list-inside text-red-100/90">
-              <li><span className="font-semibold">Pilot deals</span> with 5 agencies @ $500 for 30‑day concierge onboarding.</li>
-              <li><span className="font-semibold">Template packs</span> (trend briefs + posts) @ $29–$99.</li>
-              <li><span className="font-semibold">Affiliate</span> 25% rev‑share for creators/newsletters.</li>
-            </ul>
+          <Card title="Brand Analytics" icon={<BarChart3 className="h-5 w-5" />}>
+            <p className="text-red-100/90">
+              Build an <span className="font-semibold">admin panel</span> for fashion brands to analyze what’s trending, helping them stay ahead.
+            </p>
           </Card>
         </div>
 
@@ -107,7 +105,7 @@ function Card({ title, icon, children }) {
 function PriceCard({ name, price, cta, children, featured }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0.5, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       className={`rounded-2xl p-6 border shadow-sm hover:shadow-md ${
@@ -127,3 +125,4 @@ function PriceCard({ name, price, cta, children, featured }) {
     </motion.div>
   );
 }
+ 
